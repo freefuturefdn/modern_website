@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { CheckCircle, Users, Calendar, MapPin, Send } from "lucide-react"
+import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -59,6 +60,7 @@ const interestOptions = [
 
 export default function VolunteerPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isPopupVisible, setIsPopupVisible] = useState(false) // State for popup visibility
   const { toast } = useToast()
 
   const form = useForm<FormValues>({
@@ -79,19 +81,30 @@ export default function VolunteerPage() {
     setIsSubmitting(true)
 
     try {
-      // In a real implementation, this would be an actual Supabase insert
-      // For now, we'll just simulate a successful submission
+      // Insert data into the volunteers table
+      const { error } = await supabase
+        .from("volunteers")
+        .insert([
+          {
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+            location: values.location,
+            interests: values.interests,
+            experience: values.experience,
+            availability: values.availability,
+            agree_to_terms: values.agreeToTerms,
+          },
+        ])
 
-      console.log("Form values:", values)
+      if (error) {
+        throw error
+      }
 
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // Show success popup
+      setIsPopupVisible(true)
 
-      toast({
-        title: "Application submitted successfully!",
-        description: "We'll review your application and get back to you soon.",
-      })
-
+      // Reset the form
       form.reset()
     } catch (error) {
       console.error("Error submitting form:", error)
@@ -157,7 +170,7 @@ export default function VolunteerPage() {
             >
               <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/volunteer.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy92b2x1bnRlZXIuanBnIiwiaWF0IjoxNzQzODU0MDU5LCJleHAiOjMzNTIxOTAwNTl9.G3XAGPNTiDK5BQ5oBlva-fKmU9UQ-Gk_4aE0JcYFzWw"
                   alt="Volunteers working together"
                   fill
                   className="object-cover"
@@ -439,15 +452,15 @@ export default function VolunteerPage() {
                       <div className="space-y-1 leading-none">
                         <FormLabel>I agree to the terms and conditions</FormLabel>
                         <FormDescription>
-                          By submitting this form, you agree to our{" "}
+                          By submitting this form, you agree to receive futher inormations from Free Future Foundation. {/* {" "}
                           <Link href="/terms" className="text-primary hover:underline">
                             terms and conditions
                           </Link>{" "}
                           and{" "}
                           <Link href="/privacy" className="text-primary hover:underline">
                             privacy policy
-                          </Link>
-                          .
+                          </Link> 
+                          . */}
                         </FormDescription>
                       </div>
                       <FormMessage />
@@ -491,6 +504,19 @@ export default function VolunteerPage() {
           </div>
         </div>
       </section>
+
+      {/* Success Popup */}
+      {isPopupVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 className="text-2xl font-bold mb-4">Application Submitted!</h2>
+            <p className="text-muted-foreground mb-6">
+              Thank you for applying to volunteer with us. We'll review your application and get back to you soon.
+            </p>
+            <Button onClick={() => setIsPopupVisible(false)}>Close</Button>
+          </div>
+        </div>
+      )}
 
       {/* Testimonials Section */}
       <section className="py-20 bg-primary/10">
@@ -541,8 +567,7 @@ export default function VolunteerPage() {
                 </div>
                 <div>
                   <h3 className="font-bold">Chinedu Okoro</h3>
-                  <p className="text-sm text-muted-foreground">Volunteer since 2024</p>
-                </div>
+                 </div>
               </div>
               <p className="text-muted-foreground italic">
                 "Volunteering here has given me a platform to contribute to Nigeria's future. I've helped organize

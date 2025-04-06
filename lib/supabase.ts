@@ -17,26 +17,31 @@ export type SuccessStory = {
   created_at: string
 }
 
-export type NewsItem = {
+export interface NewsItem {
   id: number
   title: string
   summary: string
   content: string
-  image_url: string
+  image_url: string | null
   published_at: string
   category: string
+  author: string | null
+  slug: string
 }
 
-export type Event = {
+export interface Event {
   id: number
   title: string
   description: string
   location: string
   start_date: string
   end_date: string
-  image_url: string
-  registration_url: string
+  image_url: string | null
+  registration_url: string | null
   is_featured: boolean
+  max_attendees: number | null
+  current_attendees: number
+  status: 'upcoming' | 'past' | 'cancelled'
 }
 
 export type TeamMember = {

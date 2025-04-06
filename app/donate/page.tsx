@@ -16,12 +16,23 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useToast } from "@/hooks/use-toast"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
+import { supabase } from "@/lib/supabase"
 
+const PAYSTACK_URLS = {
+  "one-time": "https://paystack.com/pay/crffw1o7r4",
+  "monthly": "https://paystack.com/pay/m10hfugeh7"
+}
+
+// Define proper error typing
+type SupabaseError = {
+  message: string;
+  details: string;
+  hint: string;
+  code: string;
+}
+
+// Update the form schema to include amount
 const formSchema = z.object({
-  amount: z.string().min(1, {
-    message: "Please select or enter an amount.",
-  }),
-  customAmount: z.string().optional(),
   donationType: z.enum(["one-time", "monthly"], {
     required_error: "Please select a donation type.",
   }),
@@ -35,89 +46,80 @@ const formSchema = z.object({
   message: z.string().optional(),
 })
 
+// Define the form schema type
 type FormValues = z.infer<typeof formSchema>
 
 export default function DonatePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [selectedAmount, setSelectedAmount] = useState<string>("50")
   const { toast } = useToast()
 
+  // Initialize form after schema definition
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amount: "50",
-      customAmount: "",
-      donationType: "one-time",
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
+      customAmount: '',
+      donationType: 'one-time',
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
     },
   })
-
-  const watchAmount = form.watch("amount")
-
-  const handleAmountChange = (value: string) => {
-    setSelectedAmount(value)
-    form.setValue("amount", value)
-    if (value !== "custom") {
-      form.setValue("customAmount", "")
-    }
-  }
 
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true)
 
     try {
-      // In a real implementation, this would integrate with a payment processor
-      // For now, we'll just simulate a successful submission
 
-      console.log("Form values:", values)
+      // Store donation details in Supabase
+      const { error } = await supabase
+        .from('donations')
+        .insert([
+          {
+            name: values.name,
+            email: values.email,
+            phone: values.phone || null,
+            message: values.message || null,
+            donation_type: values.donationType,
+            payment_status: 'pending',
+            created_at: new Date().toISOString()
+          }
+        ])
 
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      if (error) {
+        throw error
+      }
 
+      // Show success toast
       toast({
-        title: "Thank you for your donation!",
-        description: "Your support helps us empower Nigerian youth.",
+        title: "Thank you for your support!",
+        description: "Redirecting you to our secure payment page...",
       })
 
-      form.reset()
-      setSelectedAmount("50")
+      // Add delay before redirect
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Redirect to appropriate Paystack payment page
+      const paymentUrl = PAYSTACK_URLS[values.donationType]
+      window.location.href = paymentUrl
+
     } catch (error) {
-      console.error("Error processing donation:", error)
+      console.error("Error details:", error)
+      
+      // Improved error handling
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : "An unexpected error occurred"
+
       toast({
-        title: "Something went wrong.",
-        description: "Your donation could not be processed. Please try again later.",
+        title: "Something went wrong",
+        description: errorMessage,
         variant: "destructive",
       })
     } finally {
       setIsSubmitting(false)
     }
   }
-
-  const impactItems = [
-    {
-      amount: "₦5,000",
-      description: "Provides educational materials for one youth participant",
-      icon: <BookOpen className="h-6 w-6" />,
-    },
-    {
-      amount: "₦20,000",
-      description: "Sponsors one youth to attend a leadership workshop",
-      icon: <Users className="h-6 w-6" />,
-    },
-    {
-      amount: "₦50,000",
-      description: "Funds a community outreach event reaching 100+ people",
-      icon: <Heart className="h-6 w-6" />,
-    },
-    {
-      amount: "₦100,000+",
-      description: "Supports a full youth leadership training program",
-      icon: <Award className="h-6 w-6" />,
-    },
-  ]
 
   return (
     <div className="pt-16">
@@ -142,29 +144,6 @@ export default function DonatePage() {
         </div>
       </section>
 
-      {/* Impact Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Your Impact" subtitle="How your donation makes a difference" center />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-            {impactItems.map((item, index) => (
-              <AnimatedCard
-                key={item.amount}
-                delay={index * 0.1}
-                className="bg-white p-6 rounded-lg shadow-md text-center"
-              >
-                <div className="mx-auto bg-primary/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
-                  <div className="text-primary">{item.icon}</div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">{item.amount}</h3>
-                <p className="text-muted-foreground">{item.description}</p>
-              </AnimatedCard>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Donation Form Section */}
       <section id="donate-form" className="py-20 bg-primary/10">
         <div className="container mx-auto px-4">
@@ -177,59 +156,6 @@ export default function DonatePage() {
           <div className="max-w-3xl mx-auto mt-12 bg-white p-8 rounded-lg shadow-md">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold">Select Amount</h3>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {["20", "50", "100", "200"].map((amount) => (
-                      <Button
-                        key={amount}
-                        type="button"
-                        variant={selectedAmount === amount ? "default" : "outline"}
-                        className="w-full"
-                        onClick={() => handleAmountChange(amount)}
-                      >
-                        ₦{amount}
-                      </Button>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      id="custom-amount"
-                      checked={selectedAmount === "custom"}
-                      onChange={() => handleAmountChange("custom")}
-                      className="h-4 w-4 text-primary"
-                    />
-                    <label htmlFor="custom-amount" className="text-sm font-medium">
-                      Custom Amount
-                    </label>
-                    <Input
-                      placeholder="Enter amount"
-                      disabled={selectedAmount !== "custom"}
-                      className="max-w-[200px]"
-                      {...form.register("customAmount")}
-                      onChange={(e) => {
-                        form.setValue("customAmount", e.target.value)
-                      }}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="amount"
-                    render={({ field }) => (
-                      <FormItem className="hidden">
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
                 <FormField
                   control={form.control}
                   name="donationType"
@@ -251,7 +177,7 @@ export default function DonatePage() {
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="monthly" id="monthly" />
                             <label htmlFor="monthly" className="text-sm font-medium">
-                              Monthly
+                              Reoccurring
                             </label>
                           </div>
                         </RadioGroup>
@@ -370,7 +296,7 @@ export default function DonatePage() {
         <div className="container mx-auto px-4">
           <SectionHeading title="Other Ways to Support" subtitle="Beyond financial contributions" center />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
             <AnimatedCard className="bg-white p-6 rounded-lg shadow-md">
               <div className="bg-primary/10 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
                 <Users className="h-6 w-6 text-primary" />
@@ -382,21 +308,6 @@ export default function DonatePage() {
               <Button variant="outline" asChild>
                 <Link href="/volunteer">
                   Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </AnimatedCard>
-
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.1}>
-              <div className="bg-primary/10 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                <BookOpen className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Spread Awareness</h3>
-              <p className="text-muted-foreground mb-4">
-                Share our mission and resources with your network to help us reach more Nigerian youth.
-              </p>
-              <Button variant="outline" asChild>
-                <Link href="/resources">
-                  Access Resources <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </AnimatedCard>

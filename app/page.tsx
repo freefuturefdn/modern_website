@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
 import type { SuccessStory, NewsItem, Event } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase"
 
 export default function HomePage() {
   const [successStories, setSuccessStories] = useState<SuccessStory[]>([])
@@ -23,91 +24,27 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        // In a real implementation, these would be actual Supabase queries
-        // For now, we'll use placeholder data
+        // Fetch latest news
+        const { data: newsData, error: newsError } = await supabase
+          .from('news')
+          .select('*')
+          .order('published_at', { ascending: false })
+          .limit(3)
 
-        setSuccessStories([
-          {
-            id: 1,
-            title: "From Struggling Student to Policy Advocate",
-            content:
-              "After joining our youth leadership program, Chioma developed the skills to advocate for educational reform in her community.",
-            image_url: "/placeholder.svg?height=400&width=600",
-            created_at: "2024-02-15",
-          },
-          {
-            id: 2,
-            title: "Building a Tech Hub in Rural Nigeria",
-            content:
-              "With our support, Emeka established a technology center that has trained over 200 young people in digital skills.",
-            image_url: "/placeholder.svg?height=400&width=600",
-            created_at: "2024-01-20",
-          },
-          {
-            id: 3,
-            title: "Advocating for Market Freedom",
-            content:
-              "Our economic freedom workshop inspired Adebayo to start a campaign for reducing barriers to small business creation.",
-            image_url: "/placeholder.svg?height=400&width=600",
-            created_at: "2023-12-10",
-          },
-        ])
+        if (newsError) throw newsError
+        setLatestNews(newsData)
 
-        setLatestNews([
-          {
-            id: 1,
-            title: "Free Future Foundation Launches New Youth Leadership Program",
-            summary: "Our new program aims to equip 500 young Nigerians with leadership skills by the end of 2024.",
-            content: "",
-            image_url: "/placeholder.svg?height=400&width=600",
-            published_at: "2024-03-01",
-            category: "Programs",
-          },
-          {
-            id: 2,
-            title: "Economic Freedom Index Shows Decline in Nigeria",
-            summary: "Our latest research highlights the challenges facing entrepreneurs and suggests policy reforms.",
-            content: "",
-            image_url: "/placeholder.svg?height=400&width=600",
-            published_at: "2024-02-20",
-            category: "Research",
-          },
-          {
-            id: 3,
-            title: "Partnership Announced with Global Liberty Institute",
-            summary: "This collaboration will bring international expertise to our advocacy efforts in Nigeria.",
-            content: "",
-            image_url: "/placeholder.svg?height=400&width=600",
-            published_at: "2024-02-05",
-            category: "Partnerships",
-          },
-        ])
+        // Fetch upcoming events
+        const { data: eventsData, error: eventsError } = await supabase
+          .from('events')
+          .select('*')
+          .eq('status', 'upcoming')
+          .gte('start_date', new Date().toISOString())
+          .order('start_date', { ascending: true })
+          .limit(2)
 
-        setUpcomingEvents([
-          {
-            id: 1,
-            title: "Economic Freedom Summit 2024",
-            description:
-              "Join us for our annual summit featuring speakers from around the world discussing economic liberty.",
-            location: "Lagos, Nigeria",
-            start_date: "2024-05-15",
-            end_date: "2024-05-17",
-            image_url: "/placeholder.svg?height=400&width=600",
-            registration_url: "/events/register/1",
-            is_featured: true,
-          },
-          {
-            id: 2,
-            title: "Youth Leadership Workshop",
-            description: "A hands-on workshop teaching advocacy skills to young Nigerians passionate about freedom.",
-            location: "Abuja, Nigeria",
-            start_date: "2024-04-10",
-            end_date: "2024-04-10",
-            image_url: "/placeholder.svg?height=400&width=600",
-            registration_url: "/events/register/2",
-            is_featured: false,
-          },
-        ])
+        if (eventsError) throw eventsError
+        setUpcomingEvents(eventsData)
 
         setLoading(false)
       } catch (error) {
@@ -234,7 +171,7 @@ export default function HomePage() {
             <AnimatedCard direction="right">
               <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-xl">
                 <Image
-                  src="/placeholder.svg?height=500&width=800"
+                  src="https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/founder.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9mb3VuZGVyLmpwZyIsImlhdCI6MTc0Mzg0NTU3MSwiZXhwIjozMzUyMTgxNTcxfQ.J-SEdbMDup1tGi0JdsQZVOSdC9IglWSYCxiZ8sm1y34"
                   alt="Kelechi Nwannunu - Founder of Free Future Foundation"
                   fill
                   className="object-cover"
@@ -269,65 +206,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Success Stories Section */}
-      <section className="py-20 bg-ash-light">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Success Stories" subtitle="Real impact in the lives of Nigerian youth" center />
-
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-              {[1, 2, 3].map((i) => (
-                <Card key={i} className="animate-pulse">
-                  <div className="h-48 bg-ash rounded-t-lg" />
-                  <CardContent className="p-6 space-y-4">
-                    <div className="h-6 bg-ash rounded w-3/4" />
-                    <div className="h-4 bg-ash rounded w-full" />
-                    <div className="h-4 bg-ash rounded w-full" />
-                    <div className="h-4 bg-ash rounded w-2/3" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-              {successStories.map((story, index) => (
-                <AnimatedCard
-                  key={story.id}
-                  delay={index * 0.1}
-                  className="bg-white rounded-lg overflow-hidden shadow-md"
-                >
-                  <div className="relative h-48">
-                    <Image
-                      src={story.image_url || "/placeholder.svg"}
-                      alt={story.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{story.title}</h3>
-                    <p className="text-muted-foreground mb-4">{story.content}</p>
-                    <Button variant="link" className="p-0" asChild>
-                      <Link href={`/success-stories/${story.id}`}>
-                        Read Full Story <ArrowRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </AnimatedCard>
-              ))}
-            </div>
-          )}
-
-          <div className="text-center mt-12">
-            <Button asChild>
-              <Link href="/success-stories">View All Success Stories</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* Latest News Section */}
-      <section className="py-20">
+      <section className="py-20 bg-ash-light">
         <div className="container mx-auto px-4">
           <SectionHeading title="Latest News" subtitle="Stay updated with our activities and impact" />
 
@@ -383,7 +263,7 @@ export default function HomePage() {
       </section>
 
       {/* Upcoming Events Section */}
-      <section className="py-20 bg-ash-light">
+      <section className="py-20">
         <div className="container mx-auto px-4">
           <SectionHeading title="Upcoming Events" subtitle="Join us in our mission to empower Nigerian youth" />
 
@@ -509,4 +389,3 @@ export default function HomePage() {
     </div>
   )
 }
-

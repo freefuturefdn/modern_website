@@ -23,8 +23,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Free Future Foundation - Empowering Nigerian Youth",
   description:
-    "At Free Future Foundation, we empower Nigerian youth with the knowledge, skills, and resources to champion freedom. Through education, advocacy, and public campaigns, we aim to cultivate a generation that drives positive change and shapes a brighter future for Nigeria.",
-    generator: 'v0.dev'
+    "At Free Future Foundation, we empower Nigerian youth with the knowledge, skills, and resources to champion freedom.",
 }
 
 export default function RootLayout({
@@ -33,23 +32,22 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${montserrat.variable}`}>
-      <body>
-        <ThemeProvider attribute="class" defaultTheme="light">
+    <html lang="en" className={`${playfair.variable} ${montserrat.variable}`} suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <ScrollToTop />
           <AnimationProvider>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
+            <Header />
+            {children}
+            <Footer />
           </AnimationProvider>
         </ThemeProvider>
       </body>
     </html>
   )
 }
-
-
-
-import './globals.css'

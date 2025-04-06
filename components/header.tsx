@@ -34,7 +34,7 @@ const navItems: NavItem[] = [
     children: [
       { title: "Volunteer", href: "/volunteer" },
       { title: "Partner With Us", href: "/partner" },
-      { title: "Engage With Us", href: "/engage" },
+      // { title: "Engage With Us", href: "/engage" },
     ],
   },
   {
@@ -43,7 +43,7 @@ const navItems: NavItem[] = [
     children: [
       { title: "Books", href: "/resources/books" },
       { title: "Articles", href: "/resources/articles" },
-      { title: "Journals", href: "/resources/journals" },
+      // { title: "Journals", href: "/resources/journals" },
     ],
   },
   {
@@ -53,7 +53,7 @@ const navItems: NavItem[] = [
       { title: "Newsroom", href: "/newsroom" },
       { title: "Blog", href: "/blog" },
       /* { title: "Media Hits", href: "/media-hits" }, */
-      { title: "Podcasts", href: "/podcasts" },
+      // { title: "Podcasts", href: "/podcasts" },
       { title: "Social Channels", href: "/social" },
       { title: "Gallery", href: "/gallery" },
     ],
@@ -109,7 +109,7 @@ export default function Header() {
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
           <Link href="/" className="flex items-center">
             <Image src="/logo.png" alt="Free Future Foundation Logo" width={40} height={40} className="mr-2" />
-            <span className="text-2xl font-bold text-gradient">Free Future Foundation</span>
+            <span className="text-2l font-bold text-gradient">Free Future Foundation</span>
           </Link>
         </motion.div>
 

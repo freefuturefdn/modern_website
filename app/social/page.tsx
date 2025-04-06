@@ -82,31 +82,29 @@ export default function SocialChannelsPage() {
       {/* Social Channels Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="space-y-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {socialChannels.map((channel, index) => (
-              <div key={channel.name} className="border-b pb-16 last:border-b-0 last:pb-0">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                  <AnimatedCard direction={index % 2 === 0 ? "right" : "left"} className="lg:col-span-1">
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                      <div
-                        className={`bg-${channel.name.toLowerCase()}-100 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4`}
-                        style={{ backgroundColor: `${channel.color}10` }}
-                      >
-                        {channel.icon}
-                      </div>
-                      <h3 className="text-xl font-bold text-center mb-2">{channel.name}</h3>
-                      <p className="text-primary font-medium text-center mb-4">{channel.handle}</p>
-                      <p className="text-muted-foreground text-center mb-4">{channel.description}</p>
-                      <p className="text-center mb-6">{channel.followers} followers</p>
-                      <Button className="w-full" asChild>
-                        <Link href={channel.url} target="_blank" rel="noopener noreferrer">
-                          Follow Us on {channel.name}
-                        </Link>
-                      </Button>
-                    </div>
-                  </AnimatedCard>
+              <AnimatedCard
+                key={channel.name}
+                direction={index % 2 === 0 ? "right" : "left"}
+                className="bg-white p-6 rounded-lg shadow-md"
+              >
+                <div
+                  className={`bg-${channel.name.toLowerCase()}-100 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4`}
+                  style={{ backgroundColor: `${channel.color}10` }}
+                >
+                  {channel.icon}
                 </div>
-              </div>
+                <h3 className="text-xl font-bold text-center mb-2">{channel.name}</h3>
+                <p className="text-primary font-medium text-center mb-4">{channel.handle}</p>
+                <p className="text-muted-foreground text-center mb-4">{channel.description}</p>
+                <p className="text-center mb-6">{channel.followers} followers</p>
+                <Button className="w-full" asChild>
+                  <Link href={channel.url} target="_blank" rel="noopener noreferrer">
+                    Follow Us on {channel.name}
+                  </Link>
+                </Button>
+              </AnimatedCard>
             ))}
           </div>
         </div>

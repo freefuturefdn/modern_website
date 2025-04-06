@@ -36,26 +36,20 @@ export default function ImpactPage() {
     {
       title: "Activism 101",
       description:
-        "We've trained over 1,000 young Nigerians in leadership skills, advocacy, and community organizing, creating a network of empowered youth driving positive change.",
-      image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80",
+        "We've trained over 50 young Nigerians in leadership skills, advocacy, and community organizing, creating a network of empowered youth driving positive change.",
+      image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/activism101.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9hY3RpdmlzbTEwMS5qcGciLCJpYXQiOjE3NDM4NTI2MDQsImV4cCI6MzM1MjE4ODYwNH0.Cpgr4VeQbKkA410bvTy08u8RDzxAIUU8Abz5D_jziig",
     },
     {
       title: "Her Voice, Her Impact",
       description:
         "Our economic freedom workshops have reached over 2,500 participants, equipping them with knowledge about entrepreneurship, property rights, and market principles.",
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80",
+      image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/her%20voice%20her%20impact%20flyer.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9oZXIgdm9pY2UgaGVyIGltcGFjdCBmbHllci5qcGciLCJpYXQiOjE3NDM4NTMyNzYsImV4cCI6MzM1MjE4OTI3Nn0.-5IJwwwOys3U4VIJt3RrIeMosqN_4Ct3MPd7n8gL7Ws",
     },
     {
       title: "The Townhall",
       description:
         "We've contributed to over 20 policy reforms that reduce barriers to entrepreneurship and expand economic opportunities for Nigerian youth.",
-      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80",
-    },
-    {
-      title: "Community Outreach",
-      description:
-        "Our community programs have reached all 36 states in Nigeria, bringing education and resources to underserved areas.",
-      image: "https://images.unsplash.com/photo-1525026198548-4baa812f1183?auto=format&fit=crop&q=80",
+      image: "https://images.unsplash.com/photo-1573879404555-3f82d0582798?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ]
 

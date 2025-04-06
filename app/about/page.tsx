@@ -58,12 +58,12 @@ export default function AboutPage() {
     {
       year: "2024",
       title: "Her Voice Her Impact",
-      description: "Began our research program to analyze and promote economic liberty in Nigeria.",
+      description: "Given voice to the real catalyst of change.",
     },
     {
-      year: "2024",
-      title: "Economic Freedom Research Initiative",
-      description: "Began our research program to analyze and promote economic liberty in Nigeria.",
+      year: "2025",
+      title: "Monthly town hall meetings",
+      description: "Discussing the freer future initiave, in a detailed conversation led by best of brains.",
     }
   ]
 
@@ -104,7 +104,7 @@ export default function AboutPage() {
             >
               <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/about-us.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9hYm91dC11cy5qcGciLCJpYXQiOjE3NDM4NTE2NDMsImV4cCI6MzM1MjE4NzY0M30.HtUb4ckNrOgIC4PqcvXk7R6AfGtF15rh4HRByJjrHwk"
                   alt="Free Future Foundation team"
                   fill
                   className="object-cover"

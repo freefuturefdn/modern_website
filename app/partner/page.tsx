@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Handshake, Building, Users, Globe, Send } from "lucide-react"
+import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -46,14 +47,20 @@ type FormValues = z.infer<typeof formSchema>
 const partners = [
   {
     id: 1,
-    name: "Students For Liberty",
-    image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/public/website-images/sfl-logo.png",
+    name: "Atlas Network",
+    image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/atlas.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9hdGxhcy5wbmciLCJpYXQiOjE3NDM5Mjc2ODUsImV4cCI6MzM1MjI2MzY4NX0.BnzOdDh8FODJSzrPgakQI9KnO2GrHQnkOChqc-yw7o4",
     alt: "Students For Liberty Logo"
   },
   {
     id: 2,
-    name: "Atlas Network",
-    image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/Ms.%20Ruth%20at%20Activism%20101.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9Ncy4gUnV0aCBhdCBBY3RpdmlzbSAxMDEuanBnIiwiaWF0IjoxNzQzNTgzNjUzLCJleHAiOjMzNTE5MTk2NTN9.fysuDRjtZfb560H63FuwaD6Kjn9YP-B6thnZkffpWkM",
+    name: "Cheetahs Policy Institute",
+    image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/cheeter.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9jaGVldGVyLmpwZWciLCJpYXQiOjE3NDM5Mjc3NjMsImV4cCI6MzM1MjI2Mzc2M30.Rm__9EM4TiH0g2jfJ5sNHZ3R8TS39TyiQ3XeVQuMf9k",
+    alt: "Atlas Network Logo"
+  },
+  {
+    id: 3,
+    name: "GreenWave Tribe",
+    image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/greenwave.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9ncmVlbndhdmUucG5nIiwiaWF0IjoxNzQzOTI3ODQwLCJleHAiOjMzNTIyNjM4NDB9.462xuRiOSX9Om0vIdUt6ADN5mq0kzdnq4sRTE8Kzj9o",
     alt: "Atlas Network Logo"
   },
   // Add more partners as needed
@@ -61,6 +68,7 @@ const partners = [
 
 export default function PartnerPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isPopupVisible, setIsPopupVisible] = useState(false) // State for popup visibility
   const { toast } = useToast()
 
   const form = useForm<FormValues>({
@@ -80,19 +88,29 @@ export default function PartnerPage() {
     setIsSubmitting(true)
 
     try {
-      // In a real implementation, this would be an actual Supabase insert
-      // For now, we'll just simulate a successful submission
+      // Insert data into the partnership_inquiries table
+      const { error } = await supabase
+        .from("partnership_inquiries")
+        .insert([
+          {
+            organization_name: values.organizationName,
+            contact_name: values.contactName,
+            email: values.email,
+            phone: values.phone,
+            organization_type: values.organizationType,
+            partnership_type: values.partnershipType,
+            message: values.message,
+          },
+        ])
 
-      console.log("Form values:", values)
+      if (error) {
+        throw error
+      }
 
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // Show success popup
+      setIsPopupVisible(true)
 
-      toast({
-        title: "Partnership inquiry submitted!",
-        description: "We'll review your information and get back to you soon.",
-      })
-
+      // Reset the form
       form.reset()
     } catch (error) {
       console.error("Error submitting form:", error)
@@ -204,14 +222,14 @@ export default function PartnerPage() {
             center
           />
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mt-12">
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-8 mt-12">
             {partners.map((partner) => (
               <AnimatedCard
                 key={partner.id}
                 delay={partner.id * 0.1}
-                className="bg-white p-20 rounded-lg shadow-md flex items-center justify-center"
+                className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center"
               >
-                <div className="relative h-12 w-full flex items-center ">
+                <div className="relative h-16 w-full flex items-center justify-center">
                   <Image
                     src={partner.image}
                     alt={partner.alt}
@@ -220,7 +238,7 @@ export default function PartnerPage() {
                     unoptimized
                   />
                 </div>
-                <p className="text-center text-sm text-muted-foreground mt-4">
+                <p className="text-center text-base font-bold text-muted-foreground mt-4">
                   {partner.name}
                 </p>
               </AnimatedCard>
@@ -242,7 +260,7 @@ export default function PartnerPage() {
             <AnimatedCard direction="right">
               <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/gallery/4Z4A0031.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9nYWxsZXJ5LzRaNEEwMDMxLmpwZyIsImlhdCI6MTc0MzkyODczOSwiZXhwIjozMzUyMjY0NzM5fQ.cnEVE4rh3kjrGSHSEOCfOKYavNJOc9VSRL-1IA-PAAc"
                   alt="Partnership benefits"
                   fill
                   className="object-cover"
@@ -485,6 +503,19 @@ export default function PartnerPage() {
           </div>
         </div>
       </section>
+
+      {/* Success Popup */}
+      {isPopupVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 className="text-2xl font-bold mb-4">Inquiry Submitted!</h2>
+            <p className="text-muted-foreground mb-6">
+              Thank you for your interest in partnering with us. We'll review your inquiry and get back to you soon.
+            </p>
+            <Button onClick={() => setIsPopupVisible(false)}>Close</Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
