@@ -21,7 +21,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "Free Future Foundation - Empowering Nigerian Youth",
+  title: "Free Future Foundation",
   description:
     "At Free Future Foundation, we empower Nigerian youth with the knowledge, skills, and resources to champion freedom.",
 }
@@ -33,6 +33,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${playfair.variable} ${montserrat.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Add favicon */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeProvider
           attribute="class"

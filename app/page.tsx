@@ -69,7 +69,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-16 hero-gradient">
         <motion.div style={{ y }} className="absolute inset-0 z-0 opacity-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/20 to-secondary/20" />
+          <div className="absolute inset-0 bg-gradient-to-a from-primary/20 to-secondary/20" />
         </motion.div>
 
         <div className="container mx-auto px-4 z-10">
@@ -106,7 +106,7 @@ export default function HomePage() {
               <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-xl">
                 <Image
                   src="https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/Ms.%20Ruth%20at%20Activism%20101.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9Ncy4gUnV0aCBhdCBBY3RpdmlzbSAxMDEuanBnIiwiaWF0IjoxNzQzNTgzNjUzLCJleHAiOjMzNTE5MTk2NTN9.fysuDRjtZfb560H63FuwaD6Kjn9YP-B6thnZkffpWkM"
-                  alt="Nigerian youth engaged in educational activities"
+                  alt="Free Future Foundation, a picture from the company's event"
                   fill
                   className="object-cover"
                   priority
@@ -118,7 +118,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
-                className="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-lg max-w-xs"
+                className="absolute -bottom-6 -left-6 bg-secondary/70 p-6 rounded-lg shadow-lg max-w-xs"
               >
                 <p className="font-bold text-lg">Founded in 2024</p>
                 <p className="text-muted-foreground">by Kelechi Nwannunu</p>
@@ -132,7 +132,7 @@ export default function HomePage() {
       <section className="py-20 bg-ash-light">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <AnimatedCard className="bg-white p-8 rounded-lg shadow-md">
+            <AnimatedCard className="bg-secondary/70 p-8 rounded-lg shadow-md">
               <h2 className="text-2xl font-bold mb-4 flex items-center">
                 <span className="bg-primary/20 text-primary p-2 rounded-full mr-3">
                   <Users className="h-6 w-6" />
@@ -146,7 +146,7 @@ export default function HomePage() {
               </p>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-white p-8 rounded-lg shadow-md" delay={0.2}>
+            <AnimatedCard className="bg-secondary/70 p-8 rounded-lg shadow-md" delay={0.2}>
               <h2 className="text-2xl font-bold mb-4 flex items-center">
                 <span className="bg-secondary/20 text-secondary p-2 rounded-full mr-3">
                   <BookOpen className="h-6 w-6" />
@@ -231,7 +231,7 @@ export default function HomePage() {
                 <AnimatedCard
                   key={news.id}
                   delay={index * 0.1}
-                  className="bg-white rounded-lg overflow-hidden shadow-md"
+                  className="bg-secondary/70 rounded-lg overflow-hidden shadow-md"
                 >
                   <div className="relative h-48">
                     <Image src={news.image_url || "/placeholder.svg"} alt={news.title} fill className="object-cover" />
@@ -287,7 +287,7 @@ export default function HomePage() {
                 <AnimatedCard
                   key={event.id}
                   delay={index * 0.1}
-                  className="bg-white rounded-lg overflow-hidden shadow-md"
+                  className="bg-secondary/70 rounded-lg overflow-hidden shadow-md"
                 >
                   <div className="relative h-64">
                     <Image
@@ -330,7 +330,7 @@ export default function HomePage() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 bg-primary/10">
+      <section className="py-20 bg-primary/30">
         <div className="container mx-auto px-4 text-center">
           <SectionHeading
             title="Join Our Mission"
@@ -339,7 +339,7 @@ export default function HomePage() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <AnimatedCard className="bg-white p-8 rounded-lg shadow-md text-center">
+            <AnimatedCard className="bg-secondary/60 p-8 rounded-lg shadow-md text-center">
               <div className="mx-auto bg-primary/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                 <Users className="h-8 w-8 text-primary" />
               </div>
@@ -352,7 +352,7 @@ export default function HomePage() {
               </Button>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-white p-8 rounded-lg shadow-md text-center" delay={0.1}>
+            <AnimatedCard className="bg-secondary/60 p-8 rounded-lg shadow-md text-center" delay={0.1}>
               <div className="mx-auto bg-secondary/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                 <Award className="h-8 w-8 text-secondary" />
               </div>
@@ -365,7 +365,7 @@ export default function HomePage() {
               </Button>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-white p-8 rounded-lg shadow-md text-center" delay={0.2}>
+            <AnimatedCard className="bg-secondary/60 p-8 rounded-lg shadow-md text-center" delay={0.2}>
               <div className="mx-auto bg-ash/40 p-4 rounded-full w-16 h-16 flex items-center enter mb-4">
                 <Calendar className="h-8 w-8 text-ash-dark" />
               </div>

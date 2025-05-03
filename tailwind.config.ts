@@ -24,20 +24,20 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#D4AF37", // Dull yellow
+          DEFAULT: "#eca105", // Gold
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#E63946", // Red
+          DEFAULT: "#092d71", // Navy blue
           foreground: "hsl(var(--secondary-foreground))",
         },
         ash: {
-          DEFAULT: "#9A9A9A", // Ash color
+          DEFAULT: "#f7f7f7", // Ash color
           light: "#E5E5E5",
           dark: "#6A6A6A",
         },
         footer: {
-          DEFAULT: "#8B0000", // Dark red
+          DEFAULT: "#092d71", // Navy blue
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -115,7 +115,7 @@ const config: Config = {
         float: "float 3s ease-in-out infinite",
       },
       fontFamily: {
-        heading: ["var(--font-playfair)", "serif"],
+        heading: ["var(--font-montserrat)", "serif"],
         body: ["var(--font-montserrat)", "sans-serif"],
       },
     },

@@ -53,7 +53,7 @@ export default function Footer() {
           {/* Column 1: Organization Info */}
           <div className="space-y-4 lg:col-span-2">
             <div className="flex flex-col items-center md:items-start">
-              <Image src="/logo.png" alt="Free Future Foundation Logo" width={60} height={60} className="mb-2" />
+              <Image src="/logo-white.png" alt="Free Future Foundation Logo" width={60} height={60} className="mb-2" />
               <h3 className="text-xl font-bold">Free Future Foundation</h3>
             </div>
             <p className="text-sm opacity-80">
@@ -174,6 +174,11 @@ export default function Footer() {
               <li>
                 <Link href="/social" className="text-sm hover:text-primary transition-colors">
                   Social Channels
+                </Link>
+              </li>
+              <li>
+                <Link href="/podcasts" className="text-sm hover:text-primary transition-colors">
+                  Podcast
                 </Link>
               </li>
               <li>
