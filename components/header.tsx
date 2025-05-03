@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
+import { useTheme } from "next-themes" // Import the theme hook
 
 type NavItem = {
   title: string
@@ -34,7 +35,6 @@ const navItems: NavItem[] = [
     children: [
       { title: "Volunteer", href: "/volunteer" },
       { title: "Partner With Us", href: "/partner" },
-      // { title: "Engage With Us", href: "/engage" },
     ],
   },
   {
@@ -43,7 +43,6 @@ const navItems: NavItem[] = [
     children: [
       { title: "Books", href: "/resources/books" },
       { title: "Articles", href: "/resources/articles" },
-      // { title: "Journals", href: "/resources/journals" },
     ],
   },
   {
@@ -75,6 +74,7 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const pathname = usePathname()
   const isMobile = useMobile()
+  const { resolvedTheme } = useTheme() // Use resolvedTheme to get the actual theme
 
   useEffect(() => {
     const handleScroll = () => {
@@ -108,7 +108,24 @@ export default function Header() {
       <div className="container mx-auto px-4 flex justify-between items-center">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
           <Link href="/" className="flex items-center">
-            <Image src="/logo.png" alt="Free Future Foundation Logo" width={40} height={40} className="mr-2" />
+            {/* Dynamically switch logos based on the resolved theme */}
+            {resolvedTheme === "dark" ? (
+              <Image
+                src="/logo-white.png"
+                alt="Free Future Foundation Logo (Dark)"
+                width={40}
+                height={40}
+                className="mr-2"
+              />
+            ) : (
+              <Image
+                src="/logo.png"
+                alt="Free Future Foundation Logo (Light)"
+                width={40}
+                height={40}
+                className="mr-2"
+              />
+            )}
             <span className="text-2l font-bold text-gradient">Free Future Foundation</span>
           </Link>
         </motion.div>

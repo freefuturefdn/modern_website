@@ -69,7 +69,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-16 hero-gradient">
         <motion.div style={{ y }} className="absolute inset-0 z-0 opacity-10">
-          <div className="absolute inset-0 bg-gradient-to-a from-primary/20 to-secondary/20" />
+          <div className="absolute inset-0 bg-gradient-to-a from-primary/70 to-secondary/70" />
         </motion.div>
 
         <div className="container mx-auto px-4 z-10">
