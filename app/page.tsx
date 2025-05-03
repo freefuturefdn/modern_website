@@ -118,7 +118,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
-                className="absolute -bottom-6 -left-6 bg-secondary/80 p-6 rounded-lg shadow-lg max-w-xs"
+                className="absolute -bottom-6 -left-6 bg-secondary p-6 rounded-lg shadow-lg max-w-xs"
               >
                 <p className="font-bold text-lg">Founded in 2024</p>
                 <p className="text-muted-foreground">by Kelechi Nwannunu</p>
