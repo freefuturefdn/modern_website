@@ -531,7 +531,7 @@ export default function VolunteerPage() {
             <AnimatedCard className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Volunteer" fill className="object-cover" />
+                  <Image src="/logo.png" alt="Volunteer" fill className="object-cover" />
                 </div>
                 <div>
                   <h3 className="font-bold">Adebayo Ogunlesi</h3>
@@ -547,7 +547,7 @@ export default function VolunteerPage() {
             <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.1}>
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Volunteer" fill className="object-cover" />
+                  <Image src="/logo.png" alt="Volunteer" fill className="object-cover" />
                 </div>
                 <div>
                   <h3 className="font-bold">Ngozi Emenike</h3>
@@ -563,7 +563,7 @@ export default function VolunteerPage() {
             <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.2}>
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Volunteer" fill className="object-cover" />
+                  <Image src="/logo.png" alt="Volunteer" fill className="object-cover" />
                 </div>
                 <div>
                   <h3 className="font-bold">Chinedu Okoro</h3>

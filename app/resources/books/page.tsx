@@ -34,7 +34,7 @@ export default function BooksPage() {
             summary:
               "A comprehensive guide to understanding economic freedom and its importance for Nigeria's development.",
             content: "",
-            image_url: "/placeholder.svg?height=400&width=300",
+            image_url: "/logo.png?height=400&width=300",
             published_at: "2024-02-15",
             type: "book" as const,
             download_url: "#",
@@ -45,7 +45,7 @@ export default function BooksPage() {
             author: "Amara Okafor",
             summary: "Explores the challenges and opportunities for young leaders in Nigeria's evolving landscape.",
             content: "",
-            image_url: "/placeholder.svg?height=400&width=300",
+            image_url: "/logo.png?height=400&width=300",
             published_at: "2024-01-10",
             type: "book" as const,
             download_url: "#",
@@ -56,7 +56,7 @@ export default function BooksPage() {
             author: "Emmanuel Adeyemi",
             summary: "An analysis of policy reforms needed to advance freedom and prosperity in Nigeria.",
             content: "",
-            image_url: "/placeholder.svg?height=400&width=300",
+            image_url: "/logo.png?height=400&width=300",
             published_at: "2023-12-05",
             type: "book" as const,
             download_url: "#",
@@ -67,7 +67,7 @@ export default function BooksPage() {
             author: "Ngozi Eze",
             summary: "A practical guide to effective advocacy for young Nigerians seeking to create positive change.",
             content: "",
-            image_url: "/placeholder.svg?height=400&width=300",
+            image_url: "/logo.png?height=400&width=300",
             published_at: "2023-11-20",
             type: "book" as const,
             download_url: "#",
@@ -78,7 +78,7 @@ export default function BooksPage() {
             author: "Oluwaseun Adeleke",
             summary: "Explores the balance between individual rights and civic responsibilities in a free society.",
             content: "",
-            image_url: "/placeholder.svg?height=400&width=300",
+            image_url: "/logo.png?height=400&width=300",
             published_at: "2023-10-15",
             type: "book" as const,
             download_url: "#",
@@ -89,7 +89,7 @@ export default function BooksPage() {
             author: "Chioma Nwosu",
             summary: "A guide to understanding and navigating market principles for aspiring entrepreneurs.",
             content: "",
-            image_url: "/placeholder.svg?height=400&width=300",
+            image_url: "/logo.png?height=400&width=300",
             published_at: "2023-09-01",
             type: "book" as const,
             download_url: "#",
@@ -275,8 +275,8 @@ export default function BooksPage() {
             center
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 max-w-4xl mx-auto">
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md">
+          <div className="text-center grid grid-cols-1 md:grid-cols-1 gap-8 mt-12 max-w-4xl mx-auto">
+            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" >
               <h3 className="text-xl font-bold mb-2">Articles</h3>
               <p className="text-muted-foreground mb-4">
                 Read our collection of articles on freedom, youth empowerment, and economic development.
@@ -288,7 +288,7 @@ export default function BooksPage() {
               </Button>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.1}>
+            {/*<AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.1}>
               <h3 className="text-xl font-bold mb-2">Journals</h3>
               <p className="text-muted-foreground mb-4">
                 Explore our academic journals featuring in-depth research and analysis.
@@ -298,7 +298,7 @@ export default function BooksPage() {
                   Browse Journals <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-            </AnimatedCard>
+            </AnimatedCard> */}
           </div>
         </div>
       </section>

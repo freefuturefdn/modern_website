@@ -14,7 +14,28 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Checkbox } from "@/components/ui/checkbox"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
-import type { Event } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase"
+
+interface Event {
+  id: number
+  title: string
+  description: string
+  location: string
+  start_date: string
+  end_date: string
+  image_url: string
+  registration_url: string | null
+  is_featured: boolean
+  max_attendees: number
+  current_attendees: number
+  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled'
+  category: string
+  resources: {
+    title: string
+    type: string
+    url: string
+  }[]
+}
 
 export default function UpcomingEventsPage() {
   const [events, setEvents] = useState<Event[]>([])
@@ -28,89 +49,20 @@ export default function UpcomingEventsPage() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        // In a real implementation, this would be an actual Supabase query
-        // For now, we'll use placeholder data
+        const { data, error } = await supabase
+          .from('events')
+          .select('*')
+          .eq('status', 'upcoming')
+          .gte('start_date', new Date().toISOString())
+          .order('start_date', { ascending: true })
 
-        const data = [
-          {
-            id: 1,
-            title: "Economic Freedom Summit 2024",
-            description:
-              "Join us for our annual summit featuring speakers from around the world discussing economic liberty. This three-day event will include keynote speeches, panel discussions, workshops, and networking opportunities for participants interested in advancing economic freedom in Nigeria.",
-            location: "Lagos, Nigeria",
-            start_date: "2024-05-15",
-            end_date: "2024-05-17",
-            image_url: "/placeholder.svg?height=400&width=600",
-            registration_url: "/events/register/1",
-            is_featured: true,
-          },
-          {
-            id: 2,
-            title: "Youth Leadership Workshop",
-            description:
-              "A hands-on workshop teaching advocacy skills to young Nigerians passionate about freedom. Participants will learn effective communication, community organizing, and policy analysis techniques.",
-            location: "Abuja, Nigeria",
-            start_date: "2024-04-10",
-            end_date: "2024-04-10",
-            image_url: "/placeholder.svg?height=400&width=600",
-            registration_url: "/events/register/2",
-            is_featured: false,
-          },
-          {
-            id: 3,
-            title: "Economic Freedom Bootcamp",
-            description:
-              "An intensive two-day bootcamp focused on entrepreneurship, market principles, and economic liberty. Participants will develop business ideas and learn how to navigate Nigeria's business environment.",
-            location: "Port Harcourt, Nigeria",
-            start_date: "2024-06-05",
-            end_date: "2024-06-06",
-            image_url: "/placeholder.svg?height=400&width=600",
-            registration_url: "/events/register/3",
-            is_featured: false,
-          },
-          {
-            id: 4,
-            title: "Digital Advocacy Training",
-            description:
-              "Learn how to leverage digital tools and platforms for effective advocacy in the modern age. This workshop will cover social media strategy, content creation, and online community building.",
-            location: "Ibadan, Nigeria",
-            start_date: "2024-06-20",
-            end_date: "2024-06-20",
-            image_url: "/placeholder.svg?height=400&width=600",
-            registration_url: "/events/register/4",
-            is_featured: false,
-          },
-          {
-            id: 5,
-            title: "Property Rights Symposium",
-            description:
-              "A symposium examining the crucial role of property rights in creating economic prosperity and opportunity. Featuring legal experts, economists, and policy advocates.",
-            location: "Lagos, Nigeria",
-            start_date: "2024-07-12",
-            end_date: "2024-07-13",
-            image_url: "/placeholder.svg?height=400&width=600",
-            registration_url: "/events/register/5",
-            is_featured: false,
-          },
-          {
-            id: 6,
-            title: "Community Organizers Workshop",
-            description:
-              "A practical workshop for grassroots organizers focused on promoting economic freedom and entrepreneurship in local communities.",
-            location: "Kano, Nigeria",
-            start_date: "2024-07-25",
-            end_date: "2024-07-25",
-            image_url: "/placeholder.svg?height=400&width=600",
-            registration_url: "/events/register/6",
-            is_featured: false,
-          },
-        ]
+        if (error) throw error
 
-        setEvents(data)
-        setFilteredEvents(data)
+        setEvents(data || [])
+        setFilteredEvents(data || [])
 
         // Set featured event
-        const featured = data.find((event) => event.is_featured)
+        const featured = data?.find((event) => event.is_featured)
         if (featured) {
           setFeaturedEvent(featured)
         }
@@ -223,11 +175,13 @@ export default function UpcomingEventsPage() {
                     <p className="text-sm text-muted-foreground">{featuredEvent.location}</p>
                   </div>
                   <p className="text-muted-foreground mb-6">{featuredEvent.description}</p>
-                  <Button asChild>
-                    <Link href={featuredEvent.registration_url}>
-                      Register Now <ArrowUpRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
+                  {featuredEvent.registration_url && (
+                    <Button asChild>
+                      <Link href={featuredEvent.registration_url}>
+                        Register Now <ArrowUpRight className="ml-1 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
             </AnimatedCard>
@@ -363,11 +317,13 @@ export default function UpcomingEventsPage() {
                     </div>
                     <p className="text-muted-foreground mb-4 line-clamp-3">{event.description}</p>
                     <div className="flex items-center justify-between">
-                      <Button asChild>
-                        <Link href={event.registration_url}>
-                          Register <ArrowUpRight className="ml-1 h-4 w-4" />
-                        </Link>
-                      </Button>
+                      {event.registration_url && (
+                        <Button asChild>
+                          <Link href={event.registration_url}>
+                            Register <ArrowUpRight className="ml-1 h-4 w-4" />
+                          </Link>
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </AnimatedCard>
@@ -411,12 +367,18 @@ export default function UpcomingEventsPage() {
       </section>
 
       {/* Host an Event Section */}
-      <section className="py-20 bg-primary/10">
+      <section className="py-20 bg-primary/70">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <AnimatedCard direction="right">
-              <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
-                <Image src="/placeholder.svg?height=400&width=600" alt="Host an event" fill className="object-cover" />
+              <div className="relative h-[400px] w-full rounded-lg overflow-hidden shadow-xl">
+                <Image 
+                  src="/logo-white.png" 
+                  alt="Host an event" 
+                  fill
+                  className="object-contain" 
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
               </div>
             </AnimatedCard>
 
@@ -427,8 +389,8 @@ export default function UpcomingEventsPage() {
                   Interested in hosting a Free Future Foundation event in your community? We partner with local
                   organizations, schools, and community groups to bring our programs to more Nigerian youth.
                 </p>
-                <p className="text-muted-foreground">
-                  Whether you want to organize a workshop, seminar, or discussion group, we can provide resources,
+                <p className="text-primary-foreground">
+                  Whether you want to organize a workshop, seminar, or town hall, we can provide resources,
                   speakers, and support to make your event a success.
                 </p>
                 <Button asChild>

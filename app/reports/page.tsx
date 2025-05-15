@@ -29,7 +29,7 @@ export default function AnnualReportsPage() {
             summary:
               "Our inaugural annual report highlights the foundation's establishment and initial programs focused on youth empowerment and economic freedom education.",
             file_url: "#",
-            cover_image_url: "/placeholder.svg?height=400&width=300",
+            cover_image_url: "/logo.png",
             published_at: "2024-03-15",
           },
         ]
@@ -115,12 +115,12 @@ export default function AnnualReportsPage() {
                     <p className="text-muted-foreground mb-4">{report.summary}</p>
                     <div className="flex space-x-2">
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/reports/${report.id}`}>
+                        <Link href={`/reports/#`}> {/* ${report.id}`}> */}
                           <FileText className="mr-2 h-4 w-4" /> View
                         </Link>
                       </Button>
                       <Button size="sm" asChild>
-                        <Link href={report.file_url} target="_blank" rel="noopener noreferrer">
+                        <Link href={report.file_url} rel="noopener noreferrer">
                           <Download className="mr-2 h-4 w-4" /> Download
                         </Link>
                       </Button>
@@ -179,7 +179,7 @@ export default function AnnualReportsPage() {
             <AnimatedCard direction="left" delay={0.2}>
               <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="/logo-white.png"
                   alt="Financial transparency"
                   fill
                   className="object-cover"
@@ -191,7 +191,7 @@ export default function AnnualReportsPage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 bg-primary/10">
+      <section className="py-20 bg-primary/70">
         <div className="container mx-auto px-4 text-center">
           <SectionHeading
             title="Questions About Our Reports?"

@@ -339,7 +339,7 @@ export default function HomePage() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <AnimatedCard className="bg-secondary/60 p-8 rounded-lg shadow-md text-center">
+            <AnimatedCard className="bg-secondary/70 p-8 rounded-lg shadow-md text-center">
               <div className="mx-auto bg-primary/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                 <Users className="h-8 w-8 text-primary" />
               </div>
@@ -352,7 +352,7 @@ export default function HomePage() {
               </Button>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-secondary/60 p-8 rounded-lg shadow-md text-center" delay={0.1}>
+            <AnimatedCard className="bg-secondary/70 p-8 rounded-lg shadow-md text-center" delay={0.1}>
               <div className="mx-auto bg-secondary/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                 <Award className="h-8 w-8 text-secondary" />
               </div>
@@ -365,7 +365,7 @@ export default function HomePage() {
               </Button>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-secondary/60 p-8 rounded-lg shadow-md text-center" delay={0.2}>
+            <AnimatedCard className="bg-secondary/70 p-8 rounded-lg shadow-md text-center" delay={0.2}>
               <div className="mx-auto bg-ash/40 p-4 rounded-full w-16 h-16 flex items-center enter mb-4">
                 <Calendar className="h-8 w-8 text-ash-dark" />
               </div>

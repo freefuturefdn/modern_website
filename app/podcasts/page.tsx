@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Search, Calendar, Play, Pause, Volume2, Star, Medal, Flame, Globe, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,8 @@ import { Apple, Spotify, Rss } from "@/components/icons"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
 import { supabase } from "@/lib/supabase"
+import { useAudioPlayer } from "@/components/audio-player-context"
+import StaticAudioPlayer from "@/components/static-audio-player"
 
 // Updated categories to match FFF's mission
 const CATEGORIES = {
@@ -62,6 +64,7 @@ export default function PodcastsPage() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [emailSubscription, setEmailSubscription] = useState('')
+  const { play, currentPodcast, isPlaying } = useAudioPlayer()
 
   useEffect(() => {
     async function fetchPodcasts() {
@@ -84,11 +87,35 @@ export default function PodcastsPage() {
   }, [])
 
   const featuredPodcast = podcasts.find(p => p.featured)
+  const filteredPodcasts = podcasts.filter(podcast =>
+    podcast.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    podcast.description.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const LoadingSkeleton = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+      {[...Array(6)].map((_, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+          className="bg-muted/50 rounded-lg p-6 space-y-4"
+        >
+          <div className="aspect-video bg-muted rounded-lg animate-pulse" />
+          <div className="space-y-2">
+            <div className="h-4 bg-muted rounded w-3/4 animate-pulse" />
+            <div className="h-4 bg-muted rounded w-1/2 animate-pulse" />
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  )
 
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="relative py-20 bg-ash-light">
+      <section className="relative py-20 bg-primary/70">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -104,8 +131,8 @@ export default function PodcastsPage() {
           </motion.div>
         </div>
       </section>
-
-      {/* Featured Episode */}
+      {/*
+      {/* Featured Episode 
       {featuredPodcast && (
         <section className="py-20">
           <div className="container mx-auto px-4">
@@ -135,9 +162,17 @@ export default function PodcastsPage() {
                   <h3 className="text-2xl font-bold mb-2">{featuredPodcast.title}</h3>
                   <p className="text-muted-foreground mb-4">{featuredPodcast.description}</p>
                   <div className="flex items-center gap-4 mb-6">
-                    <Button size="lg" className="w-full">
-                      <Play className="mr-2 h-5 w-5" />
-                      Listen Now
+                    <Button 
+                      size="lg" 
+                      className="w-full"
+                      onClick={() => play(featuredPodcast)}
+                    >
+                      {currentPodcast?.id === featuredPodcast.id && isPlaying ? (
+                        <Pause className="mr-2 h-5 w-5" />
+                      ) : (
+                        <Play className="mr-2 h-5 w-5" />
+                      )}
+                      {currentPodcast?.id === featuredPodcast.id && isPlaying ? 'Pause' : 'Listen Now'}
                     </Button>
                   </div>
                 </div>
@@ -145,33 +180,92 @@ export default function PodcastsPage() {
             </AnimatedCard>
           </div>
         </section>
-      )}
+      )} */}
 
       {/* Latest Episodes */}
-      <section className="py-20 bg-ash-light">
+      <section className="py-20 bg-secondary/50">
         <div className="container mx-auto px-4">
           <SectionHeading 
-            title="Latest Episodes" 
+            title="Our Episodes" 
             subtitle="Join the conversation for a free future"
             center
           />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            {podcasts.map((podcast, index) => (
-              <AnimatedCard
-                key={podcast.id}
-                delay={index * 0.1}
-                className="bg-white rounded-lg overflow-hidden shadow-md"
-              >
-                {/* ... existing podcast card content ... */}
-              </AnimatedCard>
-            ))}
+          <div className="mt-8 mb-12">
+            <div className="relative max-w-md mx-auto">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                type="search"
+                placeholder="Search episodes..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
           </div>
+
+          {loading ? (
+            <LoadingSkeleton />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+              <AnimatePresence>
+                {filteredPodcasts.map((podcast, index) => (
+                  <motion.div
+                    key={podcast.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <AnimatedCard className="bg-white rounded-lg overflow-hidden shadow-md">
+                      <div className="relative aspect-video">
+                        <Image
+                          src={podcast.image_url}
+                          alt={podcast.title}
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
+                        <Badge 
+                          className={`absolute top-4 left-4 ${CATEGORIES[podcast.category].color} text-white`}
+                        >
+                          {CATEGORIES[podcast.category].label}
+                        </Badge>
+                      </div>
+                      <CardContent className="p-6">
+                        <h3 className="text-xl font-bold mb-2">{podcast.title}</h3>
+                        <p className="text-muted-foreground mb-4 line-clamp-2">
+                          {podcast.description}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Calendar className="h-4 w-4" />
+                            {new Date(podcast.published_at).toLocaleDateString()}
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => play(podcast)}
+                          >
+                            {currentPodcast?.id === podcast.id && isPlaying ? (
+                              <Pause className="h-4 w-4" />
+                            ) : (
+                              <Play className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </AnimatedCard>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20">
+      <section className="py-20 bg-primary/70">
         <div className="container mx-auto px-4 text-center">
           <SectionHeading
             title="Never Miss an Episode"
@@ -194,16 +288,16 @@ export default function PodcastsPage() {
       </section>
 
       {/* Distribution Platforms */}
-      <section className="py-20 bg-footer text-white">
+      <section className="py-20 bg-secondary/70 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Listen on Your Favorite Platform
+            Coming soon on Your Favorite Platform
           </h2>
           <div className="flex flex-wrap justify-center gap-4">
             <Button 
               size="lg" 
               variant="secondary" 
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
+              className="bg-secondary/70 border-white/20 text-white hover:bg-white/20 transition-colors"
             >
               <Apple className="mr-2 h-5 w-5" />
               Apple Podcasts
@@ -211,7 +305,7 @@ export default function PodcastsPage() {
             <Button 
               size="lg" 
               variant="secondary" 
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
+              className="bg-secondary/70 border-white/20 text-white hover:bg-white/20 transition-colors"
             >
               <Spotify className="mr-2 h-5 w-5" />
               Spotify
@@ -219,14 +313,16 @@ export default function PodcastsPage() {
             <Button 
               size="lg" 
               variant="secondary" 
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
+              className="bg-secondary/70 border-white/20 text-white hover:bg-white/20 transition-colors"
             >
               <Rss className="mr-2 h-5 w-5" />
-              RSS Feed
+              YT music
             </Button>
           </div>
         </div>
       </section>
+
+      <StaticAudioPlayer />
     </div>
   )
 }

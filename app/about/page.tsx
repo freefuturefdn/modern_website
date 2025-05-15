@@ -119,7 +119,7 @@ export default function AboutPage() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <AnimatedCard className="bg-primary/10 p-8 rounded-lg">
+            <AnimatedCard className="bg-primary/70 p-8 rounded-lg">
               <h2 className="text-2xl font-bold mb-4 flex items-center">
                 <span className="bg-primary/20 text-primary p-2 rounded-full mr-3">
                   <Users className="h-6 w-6" />
@@ -133,7 +133,7 @@ export default function AboutPage() {
               </p>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-secondary/10 p-8 rounded-lg" delay={0.2}>
+            <AnimatedCard className="bg-secondary/70 p-8 rounded-lg" delay={0.2}>
               <h2 className="text-2xl font-bold mb-4 flex items-center">
                 <span className="bg-secondary/20 text-secondary p-2 rounded-full mr-3">
                   <BookOpen className="h-6 w-6" />

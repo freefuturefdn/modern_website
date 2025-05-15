@@ -34,21 +34,27 @@ export default function ImpactPage() {
 
   const impactAreas = [
     {
-      title: "Activism 101",
+      title: "Activism 101 Workshops",
       description:
-        "We've trained over 50 young Nigerians in leadership skills, advocacy, and community organizing, creating a network of empowered youth driving positive change.",
+        "Activism 101 Workshops are foundational training sessions designed to equip emerging changemakers with the knowledge, tools, and confidence to engage in impactful civic action. These workshops provide a practical introduction to activism, covering essential topics such as the history and principles of social movements, strategic advocacy, grassroots organizing, policy influence, and the ethical responsibilities of an activist. Through interactive discussions, real-world case studies, and hands-on activities, participants learn how to craft compelling messages, mobilize communities, use digital tools effectively, and drive social change through nonviolent means. Whether you're just starting or seeking to sharpen your skills, Activism 101 offers a safe, empowering space to explore your voice, connect with like-minded individuals, and begin your journey as a principled and effective advocate for a freer, more just society.",
       image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/activism101.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9hY3RpdmlzbTEwMS5qcGciLCJpYXQiOjE3NDM4NTI2MDQsImV4cCI6MzM1MjE4ODYwNH0.Cpgr4VeQbKkA410bvTy08u8RDzxAIUU8Abz5D_jziig",
     },
     {
-      title: "Her Voice, Her Impact",
+      title: "Her Voice, Her Impact Workshops",
       description:
-        "Our economic freedom workshops have reached over 2,500 participants, equipping them with knowledge about entrepreneurship, property rights, and market principles.",
+        "Her Voice, Her Impact Workshops are empowering sessions designed to amplify the voices of young women and equip them with the skills and confidence to become leaders, advocates, and changemakers in their communities. These workshops focus on personal development, leadership training, civic education, and strategic communication, helping participants understand their rights, express their ideas with clarity, and influence public discourse and policy. Through storytelling, mentorship, and interactive learning, the workshops create a safe and supportive space where women can share experiences, build networks, and develop actionable plans for social impact. Her Voice, Her Impact is more than a workshop, it’s a movement to foster agency, resilience, and purpose in the next generation of women leaders committed to shaping a freer, more inclusive society.",
       image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/her%20voice%20her%20impact%20flyer.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9oZXIgdm9pY2UgaGVyIGltcGFjdCBmbHllci5qcGciLCJpYXQiOjE3NDM4NTMyNzYsImV4cCI6MzM1MjE4OTI3Nn0.-5IJwwwOys3U4VIJt3RrIeMosqN_4Ct3MPd7n8gL7Ws",
     },
     {
       title: "The Townhall",
       description:
-        "We've contributed to over 20 policy reforms that reduce barriers to entrepreneurship and expand economic opportunities for Nigerian youth.",
+        "The Townhall is a campus-based civic engagement forum that brings together students, faculty, and young leaders to discuss critical social, economic, and political issues affecting their communities and future. Designed as a space for open dialogue and constructive debate, it empowers students to voice their concerns, share ideas, and engage directly with local changemakers and experts. By fostering civic awareness, critical thinking, and collective problem-solving, The Town Hall encourages a culture of active citizenship on campus, where students don’t just learn about society but actively participate in shaping it. Each session is a call to action, sparking meaningful conversations that can lead to real change, right from the heart of the university.",
+      image: "https://images.unsplash.com/photo-1573879404555-3f82d0582798?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "The Vanguard Fellowship",
+      description:
+        "The Vanguard Fellowship is a flagship program of the Free Future Foundation designed to empower young Nigerians through a structured two-phase experience in activism and civic engagement. The 14-week virtual pre-fellowship equips participants with foundational knowledge in civic awareness, economic freedom, and advocacy strategies. Top performers then advance to a 2-day in-person intensive, where they refine their skills, collaborate on projects, and receive certification. More than just a training, the fellowship emphasizes practical application, mentorship, and long-term support, ensuring participants become effective advocates for liberty, human rights, free markets, and limited government. The Vanguard Fellowship stands out for its merit-based structure, strong mentorship, and commitment to building a sustained community of liberty-minded changemakers across Nigeria.",
       image: "https://images.unsplash.com/photo-1573879404555-3f82d0582798?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ]
@@ -77,7 +83,7 @@ export default function ImpactPage() {
         <div className="container mx-auto px-4">
           <SectionHeading title="Impact at a Glance" subtitle="Key metrics from our work across Nigeria" center />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             {impactStats.map((stat, index) => (
               <AnimatedCard
                 key={stat.label}
@@ -135,7 +141,7 @@ export default function ImpactPage() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md">
+            <AnimatedCard className="bg-secondary/70 p-6 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
                   <Image 
@@ -156,7 +162,7 @@ export default function ImpactPage() {
               </p>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.1}>
+            <AnimatedCard className="bg-secondary/70 p-6 rounded-lg shadow-md" delay={0.1}>
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
                   <Image 
@@ -177,7 +183,7 @@ export default function ImpactPage() {
               </p>
             </AnimatedCard>
 
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.2}>
+            <AnimatedCard className="bg-secondary/70 p-6 rounded-lg shadow-md" delay={0.2}>
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
                   <Image 
@@ -199,7 +205,7 @@ export default function ImpactPage() {
               </p>
             </AnimatedCard>
           </div>
-
+{/*
           <div className="text-center mt-12">
             <Button asChild>
               <Link href="/success-stories">
@@ -207,11 +213,12 @@ export default function ImpactPage() {
               </Link>
             </Button>
           </div>
+*/}
         </div>
       </section>
 
       {/* Annual Reports Section */}
-      <section className="py-20 bg-primary/10">
+      <section className="py-20 bg-primary/70">
         <div className="container mx-auto px-4 text-center">
           <SectionHeading
             title="Annual Reports"

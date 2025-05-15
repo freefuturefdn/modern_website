@@ -5,43 +5,109 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { Calendar, Share2, Facebook, Twitter, Linkedin } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { supabase } from "@/lib/supabase"
-import { formatDate } from "@/lib/utils"
+import { createClient } from "@supabase/supabase-js"
+import { toast } from "sonner"
 
-interface ArticleData {
-  id: string
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+interface NewsItem {
+  id: number
   title: string
+  slug: string
+  author: string
+  summary: string
   content: string
   image_url: string
-  author: string
   published_at: string
   category: string
 }
 
-export default function ArticlePage({ params }: { params: { id: string } }) {
-  const [article, setArticle] = useState<ArticleData | null>(null)
+export default function NewsPage({ params }: { params: { id: string } }) {
+  const [news, setNews] = useState<NewsItem | null>(null)
   const [loading, setLoading] = useState(true)
+  const [shareUrl, setShareUrl] = useState("")
 
   useEffect(() => {
-    async function fetchArticle() {
+    // Set the share URL when the component mounts
+    setShareUrl(window.location.href)
+  }, [])
+
+  useEffect(() => {
+    async function fetchNews() {
       try {
         const { data, error } = await supabase
-          .from('articles')
-          .select('*')
-          .eq('id', params.id)
+          .from("news")
+          .select("*")
+          .eq("id", params.id)
           .single()
 
         if (error) throw error
-        setArticle(data)
-        setLoading(false)
+        setNews(data)
       } catch (error) {
-        console.error('Error fetching article:', error)
+        console.error("Error fetching news:", error)
+      } finally {
         setLoading(false)
       }
     }
 
-    fetchArticle()
+    fetchNews()
   }, [params.id])
+
+  const handleShare = async (platform: string) => {
+    if (!news) return
+
+    const shareData = {
+      title: news.title,
+      text: news.summary,
+      url: shareUrl,
+    }
+
+    // Try to use the Web Share API first
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData)
+        toast.success("Shared successfully!")
+      } catch (error) {
+        console.error("Error sharing:", error)
+        // Fallback to direct sharing if Web Share API fails
+        shareOnPlatform(platform)
+      }
+    } else {
+      // Fallback to direct sharing if Web Share API is not available
+      shareOnPlatform(platform)
+    }
+  }
+
+  const shareOnPlatform = (platform: string) => {
+    if (!news) return
+
+    const encodedUrl = encodeURIComponent(shareUrl)
+    const encodedTitle = encodeURIComponent(news.title)
+    const encodedSummary = encodeURIComponent(news.summary)
+
+    let platformShareUrl = ""
+
+    switch (platform) {
+      case "facebook":
+        platformShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+        break
+      case "twitter":
+        platformShareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=FreeFutureFdn`
+        break
+      case "linkedin":
+        platformShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
+        break
+    }
+
+    if (platformShareUrl) {
+      window.open(platformShareUrl, "_blank", "width=600,height=400")
+      toast.success(`Shared on ${platform}!`)
+    }
+  }
 
   if (loading) {
     return (
@@ -62,11 +128,11 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
     )
   }
 
-  if (!article) {
+  if (!news) {
     return (
       <div className="pt-16">
         <div className="container mx-auto px-4 text-center py-20">
-          <h1 className="text-2xl font-bold">Article not found</h1>
+          <h1 className="text-2xl font-bold">News not found</h1>
         </div>
       </div>
     )
@@ -74,7 +140,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
 
   return (
     <div className="pt-16">
-      {/* Article Header */}
+      {/* News Header */}
       <section className="py-12 bg-ash-light">
         <div className="container mx-auto px-4">
           <motion.div
@@ -83,50 +149,74 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
             transition={{ duration: 0.5 }}
             className="max-w-3xl mx-auto"
           >
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              {article.title}
-            </h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">{news.title}</h1>
             <div className="flex items-center gap-4 text-muted-foreground">
               <div className="flex items-center">
                 <Calendar className="h-4 w-4 mr-2" />
-                {formatDate(article.published_at)}
+                {new Date(news.published_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </div>
-              <div>By {article.author}</div>
+              <div>By {news.author}</div>
+              <div className="bg-primary/10 text-primary px-2 py-1 rounded text-sm">
+                {news.category}
+              </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Article Content */}
+      {/* News Content */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <div className="relative aspect-video mb-8 rounded-lg overflow-hidden">
               <Image
-                src={article.image_url}
-                alt={article.title}
+                src={news.image_url}
+                alt={news.title}
                 fill
                 className="object-cover"
                 priority
               />
             </div>
             <div className="prose prose-lg max-w-none">
-              {article.content}
+              {news.content.split("\n").map((paragraph, index) => (
+                <p key={index} className="mb-4">
+                  {paragraph}
+                </p>
+              ))}
             </div>
             
             {/* Share Buttons */}
             <div className="mt-8 pt-8 border-t">
               <div className="flex items-center gap-4">
                 <span className="font-medium">Share this article:</span>
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => handleShare("facebook")}
+                  className="hover:bg-blue-50 hover:text-blue-600"
+                >
                   <Facebook className="h-4 w-4" />
                   <span className="sr-only">Share on Facebook</span>
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => handleShare("twitter")}
+                  className="hover:bg-sky-50 hover:text-sky-600"
+                >
                   <Twitter className="h-4 w-4" />
                   <span className="sr-only">Share on Twitter</span>
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => handleShare("linkedin")}
+                  className="hover:bg-blue-50 hover:text-blue-700"
+                >
                   <Linkedin className="h-4 w-4" />
                   <span className="sr-only">Share on LinkedIn</span>
                 </Button>

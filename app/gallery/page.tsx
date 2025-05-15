@@ -18,7 +18,20 @@ import {
 } from "@/components/ui/dialog"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
-import type { GalleryItem } from "@/lib/supabase"
+import MediaPopup from "@/components/media-popup"
+import { supabase } from "@/lib/supabase"
+
+interface GalleryItem {
+  id: number
+  title: string
+  description: string
+  image_url: string
+  video_url?: string
+  type: 'image' | 'video'
+  event_id?: number
+  created_at: string
+  status: 'draft' | 'published' | 'archived'
+}
 
 export default function GalleryPage() {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([])
@@ -26,130 +39,21 @@ export default function GalleryPage() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [typeFilter, setTypeFilter] = useState("all")
-  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
+  const [selectedMedia, setSelectedMedia] = useState<{ url: string; title: string; type: 'image' | 'video' } | null>(null)
 
   useEffect(() => {
     async function fetchGalleryItems() {
       try {
-        // In a real implementation, this would be an actual Supabase query
-        // For now, we'll use placeholder data
+        const { data, error } = await supabase
+          .from('gallery')
+          .select('*')
+          .eq('status', 'published')
+          .order('created_at', { ascending: false })
 
-        const data = [
-          {
-            id: 1,
-            title: "Economic Freedom Summit 2024",
-            description:
-              "Highlights from our annual summit featuring speakers from around the world discussing economic liberty.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            event_id: 1,
-            created_at: "2024-05-17",
-            type: "image" as const,
-          },
-          {
-            id: 2,
-            title: "Youth Leadership Workshop in Abuja",
-            description: "A hands-on workshop teaching advocacy skills to young Nigerians passionate about freedom.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            event_id: 2,
-            created_at: "2024-04-10",
-            type: "image" as const,
-          },
-          {
-            id: 3,
-            title: "Community Outreach in Lagos",
-            description:
-              "Our team engaging with local communities to spread awareness about economic freedom and individual rights.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2024-03-25",
-            type: "image" as const,
-          },
-          {
-            id: 4,
-            title: "Interview with Kelechi Nwannunu",
-            description:
-              "Our founder discusses the importance of empowering Nigerian youth with knowledge about freedom and individual rights.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2024-03-10",
-            type: "video" as const,
-            video_url: "#",
-          },
-          {
-            id: 5,
-            title: "Economic Freedom Workshop",
-            description:
-              "Young entrepreneurs learning about market principles and economic liberty at our workshop in Lagos.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            event_id: 5,
-            created_at: "2024-02-20",
-            type: "image" as const,
-          },
-          {
-            id: 6,
-            title: "Partnership Announcement Ceremony",
-            description:
-              "Celebrating our new partnership with the Global Liberty Institute to enhance our advocacy efforts in Nigeria.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2024-02-05",
-            type: "image" as const,
-          },
-          {
-            id: 7,
-            title: "Youth Advocacy Network Meeting",
-            description: "Representatives from all 36 states gathered to coordinate nationwide advocacy efforts.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2024-01-15",
-            type: "image" as const,
-          },
-          {
-            id: 8,
-            title: "Highlights from Economic Freedom Summit 2023",
-            description:
-              "A recap of our successful summit featuring discussions on economic liberty and policy reform.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2023-12-10",
-            type: "video" as const,
-            video_url: "#",
-          },
-          {
-            id: 9,
-            title: "Volunteer Training Session",
-            description:
-              "Our dedicated volunteers participating in a training session to enhance their skills and knowledge.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2023-11-20",
-            type: "image" as const,
-          },
-          {
-            id: 10,
-            title: "Research Team at Work",
-            description:
-              "Behind the scenes with our research team as they analyze data for our Economic Freedom Index.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2023-11-05",
-            type: "image" as const,
-          },
-          {
-            id: 11,
-            title: "Community Impact Project",
-            description:
-              "Our team working with local communities to implement economic freedom principles in practice.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2023-10-15",
-            type: "image" as const,
-          },
-          {
-            id: 12,
-            title: "Youth Leadership Program Graduation",
-            description: "Celebrating the achievements of the first cohort of our Youth Leadership Program.",
-            image_url: "/placeholder.svg?height=600&width=800",
-            created_at: "2023-09-30",
-            type: "video" as const,
-            video_url: "#",
-          },
-        ]
+        if (error) throw error
 
-        setGalleryItems(data)
-        setFilteredItems(data)
+        setGalleryItems(data || [])
+        setFilteredItems(data || [])
         setLoading(false)
       } catch (error) {
         console.error("Error fetching gallery items:", error)
@@ -241,42 +145,52 @@ export default function GalleryPage() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div className="grid grid-cols-1 gap-6">
+              {[1, 2, 3].map((i) => (
                 <div key={i} className="animate-pulse">
-                  <div className="aspect-square bg-ash rounded-lg" />
+                  <div className="aspect-[21/9] bg-ash rounded-lg" />
                   <div className="mt-2 h-4 bg-ash rounded w-3/4" />
                   <div className="mt-1 h-3 bg-ash rounded w-1/2" />
                 </div>
               ))}
             </div>
           ) : filteredItems.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               {filteredItems.map((item, index) => (
-                <AnimatedCard
+                <div
                   key={item.id}
-                  delay={index * 0.05}
                   className="cursor-pointer"
-                  onClick={() => setSelectedItem(item)}
+                  onClick={() => setSelectedMedia({
+                    url: item.type === 'video' ? item.video_url! : item.image_url,
+                    title: item.title,
+                    type: item.type
+                  })}
                 >
-                  <div className="relative aspect-square rounded-lg overflow-hidden">
-                    <Image
-                      src={item.image_url || "/placeholder.svg"}
-                      alt={item.title}
-                      fill
-                      className="object-cover transition-transform hover:scale-105"
-                    />
-                    {item.type === "video" && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
-                        <div className="bg-white bg-opacity-80 rounded-full p-3">
-                          <Play className="h-6 w-6 text-primary" />
+                  <AnimatedCard delay={index * 0.05}>
+                    <div className="relative aspect-[21/9] rounded-lg overflow-hidden">
+                      <Image
+                        src={item.image_url}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform hover:scale-105"
+                        sizes="(max-width: 1280px) 100vw, 1280px"
+                        priority={index < 2}
+                      />
+                      {item.type === "video" && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+                          <div className="bg-white bg-opacity-80 rounded-full p-3">
+                            <Play className="h-6 w-6 text-primary" />
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                  <h3 className="mt-2 font-medium text-sm">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground">{formatDate(item.created_at)}</p>
-                </AnimatedCard>
+                      )}
+                    </div>
+                    <div className="mt-4">
+                      <h3 className="text-xl font-medium">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{formatDate(item.created_at)}</p>
+                      <p className="text-muted-foreground mt-2">{item.description}</p>
+                    </div>
+                  </AnimatedCard>
+                </div>
               ))}
             </div>
           ) : (
@@ -298,42 +212,14 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Media Item Dialog */}
-      {selectedItem && (
-        <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
-          <DialogContent className="max-w-4xl">
-            <DialogHeader>
-              <DialogTitle>{selectedItem.title}</DialogTitle>
-              <DialogDescription>{formatDate(selectedItem.created_at)}</DialogDescription>
-            </DialogHeader>
-
-            <div className="mt-4">
-              {selectedItem.type === "image" ? (
-                <div className="relative aspect-video rounded-lg overflow-hidden">
-                  <Image
-                    src={selectedItem.image_url || "/placeholder.svg"}
-                    alt={selectedItem.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="relative aspect-video rounded-lg overflow-hidden bg-black flex items-center justify-center">
-                  <div className="text-white">Video player would be here</div>
-                </div>
-              )}
-
-              <p className="mt-4 text-muted-foreground">{selectedItem.description}</p>
-            </div>
-
-            <div className="mt-4 flex justify-end">
-              <DialogClose asChild>
-                <Button variant="outline">Close</Button>
-              </DialogClose>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
+      {/* Media Popup */}
+      <MediaPopup
+        isOpen={!!selectedMedia}
+        onClose={() => setSelectedMedia(null)}
+        mediaUrl={selectedMedia?.url || ''}
+        title={selectedMedia?.title || ''}
+        type={selectedMedia?.type || 'image'}
+      />
 
       {/* Submit Content Section */}
       <section className="py-20 bg-primary/10">
