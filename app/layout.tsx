@@ -51,12 +51,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AudioPlayerProvider>
-            <ScrollToTop />
-            <AnimationProvider>
-              <Header />
-              {children}
-              <Footer />
-            </AnimationProvider>
+          <ScrollToTop />
+          <AnimationProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AnimationProvider>
           </AudioPlayerProvider>
           <Toaster richColors position="top-right" />
         </ThemeProvider>

@@ -111,7 +111,7 @@ export default function Header() {
             {/* Dynamically switch logos based on the resolved theme */}
             {resolvedTheme === "dark" ? (
               <Image
-                src="/logo-white.png"
+                src="/colored-logo.png"
                 alt="Free Future Foundation Logo (Dark)"
                 width={40}
                 height={40}
@@ -119,7 +119,7 @@ export default function Header() {
               />
             ) : (
               <Image
-                src="/logo.png"
+                src="/colored-logo.png"
                 alt="Free Future Foundation Logo (Light)"
                 width={40}
                 height={40}

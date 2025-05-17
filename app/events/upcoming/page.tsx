@@ -176,11 +176,11 @@ export default function UpcomingEventsPage() {
                   </div>
                   <p className="text-muted-foreground mb-6">{featuredEvent.description}</p>
                   {featuredEvent.registration_url && (
-                    <Button asChild>
-                      <Link href={featuredEvent.registration_url}>
-                        Register Now <ArrowUpRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
+                  <Button asChild>
+                    <Link href={featuredEvent.registration_url}>
+                      Register Now <ArrowUpRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </Button>
                   )}
                 </div>
               </div>
@@ -318,11 +318,11 @@ export default function UpcomingEventsPage() {
                     <p className="text-muted-foreground mb-4 line-clamp-3">{event.description}</p>
                     <div className="flex items-center justify-between">
                       {event.registration_url && (
-                        <Button asChild>
-                          <Link href={event.registration_url}>
-                            Register <ArrowUpRight className="ml-1 h-4 w-4" />
-                          </Link>
-                        </Button>
+                      <Button asChild>
+                        <Link href={event.registration_url}>
+                          Register <ArrowUpRight className="ml-1 h-4 w-4" />
+                        </Link>
+                      </Button>
                       )}
                     </div>
                   </CardContent>

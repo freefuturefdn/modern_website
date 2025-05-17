@@ -239,63 +239,63 @@ export default function PastEventsPage() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <Card key={i} className="animate-pulse">
-                  <div className="h-48 bg-ash rounded-t-lg" />
-                  <CardContent className="p-6 space-y-4">
-                    <div className="h-6 bg-ash rounded w-3/4" />
-                    <div className="h-4 bg-ash rounded w-1/2" />
-                    <div className="h-4 bg-ash rounded w-full" />
-                    <div className="h-4 bg-ash rounded w-full" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Card key={i} className="animate-pulse">
+                    <div className="h-48 bg-ash rounded-t-lg" />
+                    <CardContent className="p-6 space-y-4">
+                      <div className="h-6 bg-ash rounded w-3/4" />
+                      <div className="h-4 bg-ash rounded w-1/2" />
+                      <div className="h-4 bg-ash rounded w-full" />
+                      <div className="h-4 bg-ash rounded w-full" />
                     <div className="h-10 bg-ash rounded w-full" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
           ) : filteredEvents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredEvents.map((event, index) => (
-                <AnimatedCard
-                  key={event.id}
-                  delay={index * 0.1}
-                  className="bg-white rounded-lg overflow-hidden shadow-md"
-                >
-                  <div className="relative h-48">
-                    <Image
-                      src={event.image_url || "/placeholder.svg"}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      <Calendar className="h-5 w-5 text-primary mr-2" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredEvents.map((event, index) => (
+                  <AnimatedCard
+                    key={event.id}
+                    delay={index * 0.1}
+                    className="bg-white rounded-lg overflow-hidden shadow-md"
+                  >
+                    <div className="relative h-48">
+                      <Image
+                        src={event.image_url || "/placeholder.svg"}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="flex items-center mb-4">
+                        <Calendar className="h-5 w-5 text-primary mr-2" />
                       <p className="text-sm font-medium">
                         {formatDate(event.start_date)}
                         {event.start_date !== event.end_date && ` - ${formatDate(event.end_date)}`}
                       </p>
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                    <div className="flex items-center mb-4">
-                      <MapPin className="h-5 w-5 text-muted-foreground mr-2" />
-                      <p className="text-sm text-muted-foreground">{event.location}</p>
-                    </div>
-                    <p className="text-muted-foreground mb-4 line-clamp-3">{event.description}</p>
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+                      <div className="flex items-center mb-4">
+                        <MapPin className="h-5 w-5 text-muted-foreground mr-2" />
+                        <p className="text-sm text-muted-foreground">{event.location}</p>
+                      </div>
+                      <p className="text-muted-foreground mb-4 line-clamp-3">{event.description}</p>
                     <div className="flex items-center justify-between">
                       {event.resources && event.resources.length > 0 && (
                         <Button variant="outline" asChild>
                           <Link href={`/events/${event.id}`}>
                             View Resources <ArrowUpRight className="ml-1 h-4 w-4" />
-                          </Link>
-                        </Button>
+                                </Link>
+                              </Button>
                       )}
                     </div>
-                  </CardContent>
-                </AnimatedCard>
-              ))}
-            </div>
+                    </CardContent>
+                  </AnimatedCard>
+                ))}
+              </div>
           ) : (
             <div className="text-center py-12">
               <h3 className="text-xl font-bold mb-2">No events found</h3>

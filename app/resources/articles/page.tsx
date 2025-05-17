@@ -89,7 +89,7 @@ export default function ArticlesPage() {
           return a.author.localeCompare(b.author)
         default:
           return 0
-      }
+    }
     })
 
     setFilteredArticles(filtered)

@@ -4,104 +4,78 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Download, Search, BookOpen, Calendar, ArrowRight } from "lucide-react"
+import { Download, Search, BookOpen, Calendar, ArrowRight, AlertCircle, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
-import type { Publication } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase"
+
+interface Book {
+  name: string;
+  id: string;
+  created_at: string;
+  last_accessed_at: string;
+  metadata: {
+    size: number;
+    mimetype: string;
+    [key: string]: any;
+  };
+  updated_at?: string;
+}
 
 export default function BooksPage() {
-  const [books, setBooks] = useState<Publication[]>([])
-  const [filteredBooks, setFilteredBooks] = useState<Publication[]>([])
+  const [books, setBooks] = useState<Book[]>([])
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [sortOrder, setSortOrder] = useState("newest")
+  const [showDisclaimer, setShowDisclaimer] = useState(false)
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
+  const [showPdfViewer, setShowPdfViewer] = useState(false)
 
   useEffect(() => {
     async function fetchBooks() {
       try {
-        // In a real implementation, this would be an actual Supabase query
-        // For now, we'll use placeholder data
+        console.log("Fetching books from storage...");
+        const { data, error } = await supabase.storage
+          .from('books')
+          .list();
 
-        const data = [
-          {
-            id: 1,
-            title: "Economic Freedom: A Guide for Nigerian Youth",
-            author: "Kelechi Nwannunu",
-            summary:
-              "A comprehensive guide to understanding economic freedom and its importance for Nigeria's development.",
-            content: "",
-            image_url: "/logo.png?height=400&width=300",
-            published_at: "2024-02-15",
-            type: "book" as const,
-            download_url: "#",
-          },
-          {
-            id: 2,
-            title: "Youth Leadership in the 21st Century",
-            author: "Amara Okafor",
-            summary: "Explores the challenges and opportunities for young leaders in Nigeria's evolving landscape.",
-            content: "",
-            image_url: "/logo.png?height=400&width=300",
-            published_at: "2024-01-10",
-            type: "book" as const,
-            download_url: "#",
-          },
-          {
-            id: 3,
-            title: "Freedom and Prosperity: Nigeria's Path Forward",
-            author: "Emmanuel Adeyemi",
-            summary: "An analysis of policy reforms needed to advance freedom and prosperity in Nigeria.",
-            content: "",
-            image_url: "/logo.png?height=400&width=300",
-            published_at: "2023-12-05",
-            type: "book" as const,
-            download_url: "#",
-          },
-          {
-            id: 4,
-            title: "Advocacy Handbook for Nigerian Youth",
-            author: "Ngozi Eze",
-            summary: "A practical guide to effective advocacy for young Nigerians seeking to create positive change.",
-            content: "",
-            image_url: "/logo.png?height=400&width=300",
-            published_at: "2023-11-20",
-            type: "book" as const,
-            download_url: "#",
-          },
-          {
-            id: 5,
-            title: "Individual Rights and Responsibilities",
-            author: "Oluwaseun Adeleke",
-            summary: "Explores the balance between individual rights and civic responsibilities in a free society.",
-            content: "",
-            image_url: "/logo.png?height=400&width=300",
-            published_at: "2023-10-15",
-            type: "book" as const,
-            download_url: "#",
-          },
-          {
-            id: 6,
-            title: "Entrepreneurship and Market Freedom",
-            author: "Chioma Nwosu",
-            summary: "A guide to understanding and navigating market principles for aspiring entrepreneurs.",
-            content: "",
-            image_url: "/logo.png?height=400&width=300",
-            published_at: "2023-09-01",
-            type: "book" as const,
-            download_url: "#",
-          },
-        ]
-
-        setBooks(data)
-        setFilteredBooks(data)
-        setLoading(false)
+        if (error) {
+          console.error("Error fetching books:", error);
+          throw error;
+        }
+        
+        console.log("Books data:", data);
+        const pdfFiles = data
+          .filter(file => file.metadata?.mimetype === 'application/pdf')
+          .map(file => ({
+            ...file,
+            metadata: {
+              size: file.metadata?.size || 0,
+              mimetype: file.metadata?.mimetype || 'application/pdf',
+              ...file.metadata
+            }
+          })) as Book[];
+        
+        setBooks(pdfFiles);
+        setFilteredBooks(pdfFiles);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching books:", error)
-        setLoading(false)
+        console.error("Error in fetchBooks:", error);
+        setLoading(false);
       }
     }
 
@@ -115,24 +89,71 @@ export default function BooksPage() {
     if (searchQuery) {
       filtered = filtered.filter(
         (book) =>
-          book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          book.summary.toLowerCase().includes(searchQuery.toLowerCase()),
+          book.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
 
     if (sortOrder === "newest") {
-      filtered.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
+      filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     } else if (sortOrder === "oldest") {
-      filtered.sort((a, b) => new Date(a.published_at).getTime() - new Date(b.published_at).getTime())
+      filtered.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
     } else if (sortOrder === "title") {
-      filtered.sort((a, b) => a.title.localeCompare(b.title))
-    } else if (sortOrder === "author") {
-      filtered.sort((a, b) => a.author.localeCompare(b.author))
+      filtered.sort((a, b) => a.name.localeCompare(b.name))
     }
 
     setFilteredBooks(filtered)
   }, [searchQuery, sortOrder, books])
+
+  const handleRead = async (book: Book) => {
+    setSelectedBook(book);
+    setShowDisclaimer(true);
+  }
+
+  const handleDownload = async (book: Book) => {
+    setSelectedBook(book);
+    setShowDisclaimer(true);
+  }
+
+  const confirmAction = async (action: 'read' | 'download') => {
+    if (!selectedBook?.name) return;
+
+    try {
+      console.log("Attempting to access book:", selectedBook.name);
+      const { data, error } = await supabase.storage
+        .from('books')
+        .download(selectedBook.name);
+
+      if (error) {
+        console.error("Storage error:", error);
+        throw error;
+      }
+
+      console.log("Successfully retrieved book data");
+      if (action === 'download') {
+        // Create a blob URL and trigger download
+        const blob = new Blob([data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = selectedBook.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } else {
+        // Create a blob URL for viewing
+        const blob = new Blob([data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        setPdfUrl(url);
+        setShowPdfViewer(true);
+      }
+    } catch (error) {
+      console.error('Error accessing book:', error);
+    }
+
+    setShowDisclaimer(false);
+    setSelectedBook(null);
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -169,7 +190,7 @@ export default function BooksPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="text"
-                placeholder="Search books by title, author, or keywords..."
+                placeholder="Search books by title..."
                 className="pl-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -185,7 +206,6 @@ export default function BooksPage() {
                   <SelectItem value="newest">Newest First</SelectItem>
                   <SelectItem value="oldest">Oldest First</SelectItem>
                   <SelectItem value="title">Title (A-Z)</SelectItem>
-                  <SelectItem value="author">Author (A-Z)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -218,30 +238,22 @@ export default function BooksPage() {
                   delay={index * 0.1}
                   className="bg-white rounded-lg overflow-hidden shadow-md"
                 >
-                  <div className="relative h-64">
-                    <Image src={book.image_url || "/placeholder.svg"} alt={book.title} fill className="object-cover" />
+                  <div className="relative h-64 bg-ash flex items-center justify-center">
+                    <BookOpen className="h-16 w-16 text-muted-foreground" />
                   </div>
                   <CardContent className="p-6">
                     <div className="flex items-center mb-2">
                       <Calendar className="h-4 w-4 text-muted-foreground mr-2" />
-                      <p className="text-sm text-muted-foreground">{formatDate(book.published_at)}</p>
+                      <p className="text-sm text-muted-foreground">{formatDate(book.created_at)}</p>
                     </div>
-                    <h3 className="text-xl font-bold mb-1">{book.title}</h3>
-                    <p className="text-primary font-medium mb-3">By {book.author}</p>
-                    <p className="text-muted-foreground mb-4">{book.summary}</p>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/resources/books/${book.id}`}>
-                          <BookOpen className="mr-2 h-4 w-4" /> Read More
-                        </Link>
+                    <h3 className="text-xl font-bold mb-1">{book.name.replace('.pdf', '')}</h3>
+                    <div className="flex space-x-2 mt-4">
+                      <Button variant="outline" size="sm" onClick={() => handleRead(book)}>
+                        <BookOpen className="mr-2 h-4 w-4" /> Read
                       </Button>
-                      {book.download_url && (
-                        <Button size="sm" asChild>
-                          <Link href={book.download_url} target="_blank" rel="noopener noreferrer">
-                            <Download className="mr-2 h-4 w-4" /> Download
-                          </Link>
-                        </Button>
-                      )}
+                      <Button size="sm" onClick={() => handleDownload(book)}>
+                        <Download className="mr-2 h-4 w-4" /> Download
+                      </Button>
                     </div>
                   </CardContent>
                 </AnimatedCard>
@@ -266,6 +278,77 @@ export default function BooksPage() {
         </div>
       </section>
 
+      {/* Disclaimer Dialog */}
+      <Dialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
+        <DialogContent className="sm:max-w-[600px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+              <AlertCircle className="h-5 w-5 text-yellow-500" />
+              Important Notice
+            </DialogTitle>
+            <div className="space-y-4 mt-4">
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                This material is protected by copyright. Reproduction, distribution, or any other use of this material
+                without explicit written permission from the Free Future Foundation is strictly prohibited.
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Some of the books in our collection are sourced from International Economic Affairs. These materials
+                are provided for educational purposes only.
+              </p>
+              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                By accessing this material, you agree to use it solely for personal, non-commercial purposes.
+              </p>
+            </div>
+          </DialogHeader>
+          <DialogFooter className="flex-col sm:flex-row gap-2 mt-6">
+            <Button variant="outline" onClick={() => setShowDisclaimer(false)}>
+              Cancel
+            </Button>
+            {selectedBook && (
+              <>
+                <Button onClick={() => confirmAction('read')}>
+                  I Agree & Read Online
+                </Button>
+                <Button onClick={() => confirmAction('download')}>
+                  I Agree & Download
+                </Button>
+              </>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* PDF Viewer Dialog */}
+      <Dialog open={showPdfViewer} onOpenChange={setShowPdfViewer}>
+        <DialogContent className="max-w-6xl h-[90vh] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg p-0">
+          <div className="flex flex-col h-full">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h2 className="text-xl font-bold">{selectedBook?.name.replace('.pdf', '')}</h2>
+              <Button
+                variant="ghost" 
+                size="icon"
+                onClick={() => {
+                  setShowPdfViewer(false);
+                  if (pdfUrl) {
+                    window.URL.revokeObjectURL(pdfUrl);
+                    setPdfUrl(null);
+                  }
+                }}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            {pdfUrl && (
+              <iframe
+                src={pdfUrl}
+                className="flex-1 w-full border-0"
+                title={selectedBook?.name}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Resources Navigation Section */}
       <section className="py-20 bg-ash-light">
         <div className="container mx-auto px-4">
@@ -287,18 +370,6 @@ export default function BooksPage() {
                 </Link>
               </Button>
             </AnimatedCard>
-
-            {/*<AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.1}>
-              <h3 className="text-xl font-bold mb-2">Journals</h3>
-              <p className="text-muted-foreground mb-4">
-                Explore our academic journals featuring in-depth research and analysis.
-              </p>
-              <Button asChild>
-                <Link href="/resources/journals">
-                  Browse Journals <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </AnimatedCard> */}
           </div>
         </div>
       </section>

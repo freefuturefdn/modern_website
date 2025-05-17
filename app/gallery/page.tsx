@@ -18,20 +18,8 @@ import {
 } from "@/components/ui/dialog"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
-import MediaPopup from "@/components/media-popup"
+import type { GalleryItem } from "@/lib/supabase"
 import { supabase } from "@/lib/supabase"
-
-interface GalleryItem {
-  id: number
-  title: string
-  description: string
-  image_url: string
-  video_url?: string
-  type: 'image' | 'video'
-  event_id?: number
-  created_at: string
-  status: 'draft' | 'published' | 'archived'
-}
 
 export default function GalleryPage() {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([])
@@ -39,21 +27,46 @@ export default function GalleryPage() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [typeFilter, setTypeFilter] = useState("all")
-  const [selectedMedia, setSelectedMedia] = useState<{ url: string; title: string; type: 'image' | 'video' } | null>(null)
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
+  const [showDisclaimer, setShowDisclaimer] = useState(true)
 
   useEffect(() => {
     async function fetchGalleryItems() {
       try {
         const { data, error } = await supabase
-          .from('gallery')
-          .select('*')
-          .eq('status', 'published')
-          .order('created_at', { ascending: false })
+          .storage
+          .from('website-images')
+          .list('gallery', {
+            sortBy: { column: 'created_at', order: 'desc' },
+            limit: 100
+          })
 
         if (error) throw error
 
-        setGalleryItems(data || [])
-        setFilteredItems(data || [])
+        if (!data || data.length === 0) {
+          setLoading(false)
+          return
+        }
+
+        const items: GalleryItem[] = data.map((item, index) => {
+          const { data: urlData } = supabase.storage
+            .from('website-images')
+            .getPublicUrl(`gallery/${item.name}`)
+
+          return {
+            id: index + 1,
+            title: item.metadata?.title || item.name.replace(/\.[^/.]+$/, "").replace(/-/g, " "),
+            description: item.metadata?.description || '',
+            image_url: urlData.publicUrl,
+            created_at: item.created_at || new Date().toISOString(),
+            type: item.metadata?.type || (item.name.match(/\.(mp4|mov|avi)$/i) ? 'video' : 'image'),
+            event_id: item.metadata?.event_id ? Number(item.metadata.event_id) : undefined,
+            video_url: item.metadata?.type === 'video' ? urlData.publicUrl : undefined
+          }
+        })
+
+        setGalleryItems(items)
+        setFilteredItems(items)
         setLoading(false)
       } catch (error) {
         console.error("Error fetching gallery items:", error)
@@ -65,7 +78,6 @@ export default function GalleryPage() {
   }, [])
 
   useEffect(() => {
-    // Filter gallery items based on search query and type filter
     let filtered = [...galleryItems]
 
     if (searchQuery) {
@@ -83,16 +95,36 @@ export default function GalleryPage() {
     setFilteredItems(filtered)
   }, [searchQuery, typeFilter, galleryItems])
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  }
-
   return (
     <div className="pt-16">
+      {/* Disclaimer Dialog */}
+      <Dialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
+        <DialogContent className="max-w-2xl bg-white">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">Important Notice</DialogTitle>
+          </DialogHeader>
+          <div className="mt-4 space-y-4">
+            <p className="text-muted-foreground">
+              Please note that all images in this gallery are the property of Free Future Foundation and are protected by copyright.
+            </p>
+            <p className="text-muted-foreground">
+              You may not use, download, or reproduce any images from this gallery without written permission from Free Future Foundation.
+            </p>
+            <p className="text-muted-foreground">
+              To request permission, please send an email to{" "}
+              <a href="mailto:info@freefuturefoundation.org" className="text-primary hover:underline">
+                info@freefuturefoundation.org
+              </a>
+            </p>
+          </div>
+          <div className="mt-6 flex justify-end">
+            <Button onClick={() => setShowDisclaimer(false)}>
+              I Understand
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Hero Section */}
       <section className="relative py-20 bg-ash-light">
         <div className="container mx-auto px-4 text-center">
@@ -145,36 +177,32 @@ export default function GalleryPage() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="grid grid-cols-1 gap-6">
-              {[1, 2, 3].map((i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 <div key={i} className="animate-pulse">
-                  <div className="aspect-[21/9] bg-ash rounded-lg" />
+                  <div className="aspect-square bg-ash rounded-lg" />
                   <div className="mt-2 h-4 bg-ash rounded w-3/4" />
-                  <div className="mt-1 h-3 bg-ash rounded w-1/2" />
                 </div>
               ))}
             </div>
           ) : filteredItems.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredItems.map((item, index) => (
                 <div
                   key={item.id}
                   className="cursor-pointer"
-                  onClick={() => setSelectedMedia({
-                    url: item.type === 'video' ? item.video_url! : item.image_url,
-                    title: item.title,
-                    type: item.type
-                  })}
+                  onClick={() => setSelectedItem(item)}
                 >
-                  <AnimatedCard delay={index * 0.05}>
-                    <div className="relative aspect-[21/9] rounded-lg overflow-hidden">
+                  <AnimatedCard
+                    delay={index * 0.05}
+                    className="h-full"
+                  >
+                    <div className="relative aspect-square rounded-lg overflow-hidden">
                       <Image
-                        src={item.image_url}
+                        src={item.image_url || "/placeholder.svg"}
                         alt={item.title}
                         fill
                         className="object-cover transition-transform hover:scale-105"
-                        sizes="(max-width: 1280px) 100vw, 1280px"
-                        priority={index < 2}
                       />
                       {item.type === "video" && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
@@ -184,11 +212,7 @@ export default function GalleryPage() {
                         </div>
                       )}
                     </div>
-                    <div className="mt-4">
-                      <h3 className="text-xl font-medium">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">{formatDate(item.created_at)}</p>
-                      <p className="text-muted-foreground mt-2">{item.description}</p>
-                    </div>
+                    <h3 className="mt-2 font-medium text-sm">{item.title}</h3>
                   </AnimatedCard>
                 </div>
               ))}
@@ -212,14 +236,41 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Media Popup */}
-      <MediaPopup
-        isOpen={!!selectedMedia}
-        onClose={() => setSelectedMedia(null)}
-        mediaUrl={selectedMedia?.url || ''}
-        title={selectedMedia?.title || ''}
-        type={selectedMedia?.type || 'image'}
-      />
+      {/* Media Item Dialog */}
+      {selectedItem && (
+        <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+          <DialogContent className="max-w-4xl bg-white">
+            <DialogHeader>
+              <DialogTitle>{selectedItem.title}</DialogTitle>
+            </DialogHeader>
+
+            <div className="mt-4">
+              {selectedItem.type === "image" ? (
+                <div className="relative aspect-video rounded-lg overflow-hidden">
+                  <Image
+                    src={selectedItem.image_url || "/placeholder.svg"}
+                    alt={selectedItem.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="relative aspect-video rounded-lg overflow-hidden bg-black flex items-center justify-center">
+                  <div className="text-white">Video player would be here</div>
+                </div>
+              )}
+
+              <p className="mt-4 text-muted-foreground">{selectedItem.description}</p>
+            </div>
+
+            <div className="mt-4 flex justify-end">
+              <DialogClose asChild>
+                <Button variant="outline">Close</Button>
+              </DialogClose>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
 
       {/* Submit Content Section */}
       <section className="py-20 bg-primary/10">
