@@ -7,7 +7,7 @@ import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { CheckCircle, Users, Calendar, MapPin, Send } from "lucide-react"
+import { CheckCircle, Users, Calendar, MapPin, Send, X, AlertCircle } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -18,6 +18,14 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -60,7 +68,9 @@ const interestOptions = [
 
 export default function VolunteerPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isPopupVisible, setIsPopupVisible] = useState(false) // State for popup visibility
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [showErrorDialog, setShowErrorDialog] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const { toast } = useToast()
 
   const form = useForm<FormValues>({
@@ -101,18 +111,15 @@ export default function VolunteerPage() {
         throw error
       }
 
-      // Show success popup
-      setIsPopupVisible(true)
-
+      // Show success dialog
+      setShowSuccessDialog(true)
+      
       // Reset the form
       form.reset()
     } catch (error) {
       console.error("Error submitting form:", error)
-      toast({
-        title: "Something went wrong.",
-        description: "Your application could not be submitted. Please try again later.",
-        variant: "destructive",
-      })
+      setErrorMessage("Your application could not be submitted. Please try again later.")
+      setShowErrorDialog(true)
     } finally {
       setIsSubmitting(false)
     }
@@ -505,18 +512,61 @@ export default function VolunteerPage() {
         </div>
       </section>
 
-      {/* Success Popup */}
-      {isPopupVisible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <h2 className="text-2xl font-bold mb-4">Application Submitted!</h2>
-            <p className="text-muted-foreground mb-6">
-              Thank you for applying to volunteer with us. We'll review your application and get back to you soon.
-            </p>
-            <Button onClick={() => setIsPopupVisible(false)}>Close</Button>
-          </div>
-        </div>
-      )}
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+              <CheckCircle className="h-5 w-5 text-green-500" />
+              Application Submitted!
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 dark:text-gray-300">
+              <div className="space-y-4 mt-4">
+                <p className="text-sm">
+                  Thank you for applying to volunteer with us. We'll review your application and get back to you soon.
+                </p>
+                <p className="text-sm">
+                  We appreciate your interest in joining our mission to empower Nigerian youth and advance freedom.
+                </p>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={() => setShowSuccessDialog(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Error Dialog */}
+      <Dialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
+        <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+              <AlertCircle className="h-5 w-5 text-red-500" />
+              Submission Failed
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 dark:text-gray-300">
+              <div className="space-y-4 mt-4">
+                <p className="text-sm">
+                  {errorMessage}
+                </p>
+                <p className="text-sm">
+                  Please try again or contact us if the problem persists.
+                </p>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowErrorDialog(false)}>Close</Button>
+            <Button onClick={() => {
+              setShowErrorDialog(false)
+              form.reset()
+            }}>
+              Try Again
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Testimonials Section */}
       <section className="py-20 bg-primary/10">

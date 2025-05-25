@@ -18,23 +18,14 @@ import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
 import { supabase } from "@/lib/supabase"
 
-const PAYSTACK_URLS = {
-  "one-time": "https://paystack.com/pay/crffw1o7r4",
-  "monthly": "https://paystack.com/pay/m10hfugeh7"
+const QOREPAY_URLS = {
+  naira: "https://gate.qorepay.com/l/fpyGY-wwwfreefuturefoundationorg/",
+  usd: "https://gate.qorepay.com/l/6a0f26c3-fb04-44a6-86af-99e0a4e7b7cd/"
 }
 
-// Define proper error typing
-type SupabaseError = {
-  message: string;
-  details: string;
-  hint: string;
-  code: string;
-}
-
-// Update the form schema to include amount
 const formSchema = z.object({
-  donationType: z.enum(["one-time", "monthly"], {
-    required_error: "Please select a donation type.",
+  currency: z.enum(["naira", "usd"], {
+    required_error: "Please select a currency.",
   }),
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
@@ -46,19 +37,16 @@ const formSchema = z.object({
   message: z.string().optional(),
 })
 
-// Define the form schema type
 type FormValues = z.infer<typeof formSchema>
 
 export default function DonatePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
 
-  // Initialize form after schema definition
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      customAmount: '',
-      donationType: 'one-time',
+      currency: 'naira',
       name: '',
       email: '',
       phone: '',
@@ -80,7 +68,6 @@ export default function DonatePage() {
             email: values.email,
             phone: values.phone || null,
             message: values.message || null,
-            donation_type: values.donationType,
             payment_status: 'pending',
             created_at: new Date().toISOString()
           }
@@ -100,16 +87,19 @@ export default function DonatePage() {
       await new Promise(resolve => setTimeout(resolve, 1500))
 
       // Redirect to appropriate Paystack payment page
-      const paymentUrl = PAYSTACK_URLS[values.donationType]
+      const paymentUrl = QOREPAY_URLS[values.currency]
       window.location.href = paymentUrl
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error details:", error)
-      
-      // Improved error handling
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : "An unexpected error occurred"
+
+      // Try to show a more helpful error message
+      let errorMessage = "An unexpected error occurred"
+      if (error?.message) {
+        errorMessage = error.message
+      } else if (typeof error === "object" && error !== null) {
+        errorMessage = JSON.stringify(error)
+      }
 
       toast({
         title: "Something went wrong",
@@ -158,10 +148,10 @@ export default function DonatePage() {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
-                  name="donationType"
+                  name="currency"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
-                      <FormLabel>Donation Frequency</FormLabel>
+                      <FormLabel>Select Currency</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
@@ -169,15 +159,15 @@ export default function DonatePage() {
                           className="flex space-x-4"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="one-time" id="one-time" />
-                            <label htmlFor="one-time" className="text-sm font-medium">
-                              One-time
+                            <RadioGroupItem value="naira" id="naira" />
+                            <label htmlFor="naira" className="text-sm font-medium">
+                              Naira (₦)
                             </label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="monthly" id="monthly" />
-                            <label htmlFor="monthly" className="text-sm font-medium">
-                              Reoccurring
+                            <RadioGroupItem value="usd" id="usd" />
+                            <label htmlFor="usd" className="text-sm font-medium">
+                              US Dollar ($)
                             </label>
                           </div>
                         </RadioGroup>
