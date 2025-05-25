@@ -19,8 +19,8 @@ import AnimatedCard from "@/components/animated-card"
 import { supabase } from "@/lib/supabase"
 
 const QOREPAY_URLS = {
-  naira: "https://gate.qorepay.com/l/fpyGY-wwwfreefuturefoundationorg/",
-  usd: "https://gate.qorepay.com/l/6a0f26c3-fb04-44a6-86af-99e0a4e7b7cd/"
+  naira: "https://paystack.com/pay/m10hfugeh7",
+  usd: "mailto:info@freefuturefoundation.org"
 }
 
 const formSchema = z.object({
@@ -151,7 +151,7 @@ export default function DonatePage() {
                   name="currency"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
-                      <FormLabel>Select Currency</FormLabel>
+                      <FormLabel>Select Currency(For dollars and crypto payment, you would be redirected to request account/wallet via email)</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}

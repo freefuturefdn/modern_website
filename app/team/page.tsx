@@ -80,8 +80,8 @@ export default function TeamPage() {
         </div>
       </section>
 
-            {/* Board Members Section */}
-            <section className="py-20 bg-primary" >
+        {/* Board Members Section */}
+        <section className="py-20 bg-primary" >
         <div className="container mx-auto px-4">
           <SectionHeading 
             title="The Board" 
