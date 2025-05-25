@@ -4,19 +4,23 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowRight, Users, BookOpen, Award, Calendar, ArrowUpRight } from "lucide-react"
+import { ArrowRight, Users, BookOpen, Award, Calendar, ArrowUpRight, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
 import type { SuccessStory, NewsItem, Event } from "@/lib/supabase"
 import { supabase } from "@/lib/supabase"
+import { useRouter } from "next/navigation"
 
 export default function HomePage() {
   const [successStories, setSuccessStories] = useState<SuccessStory[]>([])
   const [latestNews, setLatestNews] = useState<NewsItem[]>([])
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
+  const [showDonationPopup, setShowDonationPopup] = useState(true)
+
+  const router = useRouter()
 
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], [0, 300])
@@ -66,6 +70,32 @@ export default function HomePage() {
 
   return (
     <div className="overflow-hidden">
+      {/* Donation Popup */}
+      {showDonationPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="relative bg-primary text-white rounded-lg shadow-2xl px-8 py-8 max-w-lg w-full flex flex-col items-center gap-6">
+            <button
+              className="absolute top-3 right-3 text-white hover:text-ash"
+              aria-label="Close"
+              onClick={() => setShowDonationPopup(false)}
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <h2 className="text-2xl font-bold mb-1 text-center">Support Our Mission!</h2>
+            <p className="text-base text-center">
+              Help us empower Nigerian youth for a free future. Your donation makes a difference.
+            </p>
+            <Button
+              className="mt-2"
+              variant="secondary"
+              onClick={() => router.push("/donate")}
+            >
+              Donate Now
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-16 hero-gradient">
         <motion.div style={{ y }} className="absolute inset-0 z-0 opacity-10">

@@ -46,7 +46,7 @@ export default function RootLayout({
       <body className={cn("min-h-screen bg-background font-sans antialiased", playfair.variable, montserrat.variable)}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
