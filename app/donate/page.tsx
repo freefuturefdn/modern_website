@@ -333,7 +333,7 @@ export default function DonatePage() {
             <div className="flex items-center justify-center">
               <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
                 <Image
-                  src="/placeholder.svg?height=100&width=100"
+                  src="https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/public/website-images/gallery/4Z4A0345.jpg"
                   alt="Kelechi Nwannunu"
                   fill
                   className="object-cover"
