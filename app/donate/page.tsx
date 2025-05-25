@@ -20,7 +20,7 @@ import { supabase } from "@/lib/supabase"
 
 const QOREPAY_URLS = {
   naira: "https://paystack.com/pay/m10hfugeh7",
-  usd: "mailto:info@freefuturefoundation.org"
+  usd: "mailto:info@freefuturefoundation.org?subject=Donation%20Request&body=Hello%2C%20I%20would%20like%20to%20make%20a%20donation%20in%20USD%20or%20crypto."
 }
 
 const formSchema = z.object({
@@ -58,7 +58,6 @@ export default function DonatePage() {
     setIsSubmitting(true)
 
     try {
-
       // Store donation details in Supabase
       const { error } = await supabase
         .from('donations')
@@ -77,16 +76,14 @@ export default function DonatePage() {
         throw error
       }
 
-      // Show success toast
       toast({
         title: "Thank you for your support!",
         description: "Redirecting you to our secure payment page...",
       })
 
-      // Add delay before redirect
       await new Promise(resolve => setTimeout(resolve, 1500))
 
-      // Redirect to appropriate Paystack payment page
+      // Redirect based on currency
       const paymentUrl = QOREPAY_URLS[values.currency]
       window.location.href = paymentUrl
 
