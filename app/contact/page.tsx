@@ -116,7 +116,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold">Our Location</h3>
-                    <p className="text-muted-foreground">Lagos, Nigeria</p>
+                    <p className="text-muted-foreground">Port Harcourt, Nigeria</p>
                   </div>
                 </AnimatedCard>
 
