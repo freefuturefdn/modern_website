@@ -82,7 +82,7 @@ export default function HomePage() {
             </button>
             <h2 className="text-lg font-medium mb-1 text-center">Support Our Mission!</h2>
             <p className="text-sm text-center">
-              Help us empower Nigerian youth for a freer future. Your donation makes a difference.
+              Promote individual freedom and economic opportunity. Your contribution drives real change.
             </p>
             <Button size="sm" className="mt-1 px-2 py-1"
               variant="secondary"
@@ -109,11 +109,11 @@ export default function HomePage() {
               className="space-y-6"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                Empowering Nigerian Youth for a <span className="text-gradient">Free Future</span>
+                Promoting Individual Liberty for a <span className="text-gradient">Free Nigeria</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground">
-                Through education, advocacy, and public campaigns, we aim to cultivate a generation that drives positive
-                change and shapes a brighter future for Nigeria.
+                Through free-market education, policy advocacy, and civic engagement, we empower citizens to uphold civil
+                liberties, personal responsibility, and limited government.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" asChild>
@@ -169,12 +169,10 @@ export default function HomePage() {
                 Our Mission
               </h2>
               <p className="text-muted-foreground">
-                Our mission is to inspire and equip young Africans to become informed, courageous leaders who
-advance freedom, justice, and human dignity.
-Through transformative education and purposeful campaigns, we champion knowledge, civic
-engagement, and meaningful collaboration with policymakers and partner organizations. Rooted
-in the values of freedom and justice, our work empowers a new generation to drive lasting,
-positive change by shaping policies and communities that reflect these ideals.
+                Our mission is to advance individual liberty, free markets, and limited government through
+                education and grassroots advocacy. We equip citizens with the knowledge and tools to
+                champion civil liberties, economic freedom, and responsible self-governance, creating
+                lasting impact in communities across Nigeria.
               </p>
             </AnimatedCard>
 
@@ -186,10 +184,10 @@ positive change by shaping policies and communities that reflect these ideals.
                 Our Vision
               </h2>
               <p className="text-muted-foreground">
-                We envision an Africa where young people, grounded in the principles of freedom, shape society
-with knowledge, courage, and purpose. By building vibrant networks of engaged leaders, we
-cultivate a future where every individual—regardless of background—thrives with dignity,
-champions positive change, and unlocks new horizons of opportunity.
+                We envision a Nigeria where individuals fully enjoy personal, economic, and political freedoms.
+                By fostering a culture of entrepreneurship, civic engagement, and constitutional respect,
+                we build communities where free markets create opportunity, and every citizen governs
+                themselves with dignity and responsibility.
               </p>
             </AnimatedCard>
           </div>
@@ -343,11 +341,15 @@ champions positive change, and unlocks new horizons of opportunity.
                     <p className="text-muted-foreground mb-4">{event.description}</p>
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium">{event.location}</p>
-                      <Button asChild>
-                        <Link href={event.registration_url} target="_blank">
-                          Register <ArrowUpRight className="ml-1 h-4 w-4" />
-                        </Link>
-                      </Button>
+                      {event.registration_url ? (
+                        <Button asChild>
+                          <Link href={event.registration_url} target="_blank">
+                            Register <ArrowUpRight className="ml-1 h-4 w-4" />
+                          </Link>
+                        </Button>
+                      ) : (
+                        <p className="text-sm text-muted-foreground italic">Registration coming soon</p>
+                      )}
                     </div>
                   </CardContent>
                 </AnimatedCard>

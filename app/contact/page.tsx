@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast"
 import SectionHeading from "@/components/section-heading"
 import AnimatedCard from "@/components/animated-card"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -116,7 +117,9 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold">Our Location</h3>
-                    <p className="text-muted-foreground">Port Harcourt, Nigeria</p>
+                    <p className="text-muted-foreground">
+                      Free Future Foundation, 17 Amadi Street, Oginigba, Port Harcourt 500102, Rivers State, Nigeria
+                    </p>
                   </div>
                 </AnimatedCard>
 
@@ -279,15 +282,22 @@ export default function ContactPage() {
       {/* Map Section */}
       <section className="py-20 bg-ash-light">
         <div className="container mx-auto px-4">
-          <SectionHeading title="Find Us" subtitle="Visit our office in Lagos, Nigeria" center />
+          <SectionHeading
+            title="Find Us"
+            subtitle="Visit our office at 17 Amadi Street, Oginigba, Port Harcourt 500102, Rivers State, Nigeria"
+            center
+          />
 
           <div className="mt-12 h-[400px] rounded-lg overflow-hidden shadow-lg">
-            <div className="w-full h-full bg-ash-dark relative">
-              {/* This would be replaced with an actual map in production */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-white text-lg">Interactive Map Would Be Displayed Here</p>
-              </div>
-            </div>
+            <iframe
+              src="https://maps.google.com/maps?q=Free%20Future%20Foundation%2C%2017%20Amadi%20Street%2C%20Oginigba%2C%20Port%20Harcourt%20500102%2C%20Rivers%20Nigeria&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              className="border-0"
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </section>
@@ -297,43 +307,48 @@ export default function ContactPage() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Frequently Asked Questions"
-            subtitle="Find answers to common questions about our organization"
+            subtitle="Click a question to view the answer"
             center
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold mb-2">How can I volunteer with Free Future Foundation?</h3>
-              <p className="text-muted-foreground">
+          <Accordion type="single" collapsible className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AccordionItem value="volunteer" className="bg-white p-6 rounded-lg shadow-md">
+              <AccordionTrigger className="text-lg font-semibold">
+                How can I volunteer with Free Future Foundation?
+              </AccordionTrigger>
+              <AccordionContent>
                 You can apply to volunteer through our website by visiting the Volunteer page. We have various
                 opportunities available based on your skills and interests.
-              </p>
-            </AnimatedCard>
-
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.1}>
-              <h3 className="text-xl font-bold mb-2">Does the foundation accept donations?</h3>
-              <p className="text-muted-foreground">
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="donations" className="bg-white p-6 rounded-lg shadow-md">
+              <AccordionTrigger className="text-lg font-semibold">
+                Does the foundation accept donations?
+              </AccordionTrigger>
+              <AccordionContent>
                 Yes, we accept donations to support our programs and initiatives. You can donate through our website or
                 contact us directly for more information.
-              </p>
-            </AnimatedCard>
-
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.2}>
-              <h3 className="text-xl font-bold mb-2">How can my organization partner with Free Future Foundation?</h3>
-              <p className="text-muted-foreground">
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="partnerships" className="bg-white p-6 rounded-lg shadow-md">
+              <AccordionTrigger className="text-lg font-semibold">
+                How can my organization partner with Free Future Foundation?
+              </AccordionTrigger>
+              <AccordionContent>
                 We welcome partnerships with organizations that share our vision. Please contact us through this form or
                 email us at partnerships@freefuturefoundation.org.
-              </p>
-            </AnimatedCard>
-
-            <AnimatedCard className="bg-white p-6 rounded-lg shadow-md" delay={0.3}>
-              <h3 className="text-xl font-bold mb-2">What areas of Nigeria do you operate in?</h3>
-              <p className="text-muted-foreground">
-                While we are based in Lagos, our programs and initiatives reach across Nigeria. We are continuously
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="operations" className="bg-white p-6 rounded-lg shadow-md">
+              <AccordionTrigger className="text-lg font-semibold">
+                What areas of Nigeria do you operate in?
+              </AccordionTrigger>
+              <AccordionContent>
+                While we are based in Port Harcourt, our programs and initiatives reach across Nigeria. We are continuously
                 expanding our reach to impact more communities.
-              </p>
-            </AnimatedCard>
-          </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
     </div>
