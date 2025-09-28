@@ -121,11 +121,13 @@ export default function Footer() {
                   Impact
                 </Link>
               </li>
+              {/*
               <li>
                 <Link href="/reports" className="text-sm hover:text-primary transition-colors">
                   Annual Reports
                 </Link>
               </li>
+              */}
             </ul>
 
             <h3 className="text-lg font-bold pt-4">Get Involved</h3>

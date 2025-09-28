@@ -527,6 +527,22 @@ export default function VolunteerPage() {
         </div>
       </section>
 
+      {/* Volunteer List Link Section */}
+      <section className="py-20 bg-ash-light">
+        <div className="container mx-auto px-4 text-center">
+          <SectionHeading
+            title="See Our Volunteers"
+            subtitle="Meet present volunteers making a difference"
+            center
+          />
+          <div className="mt-8">
+            <Button size="lg" asChild>
+              <Link href="/volunteers">View Present Volunteers</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Success Dialog */}
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg">
@@ -599,13 +615,13 @@ export default function VolunteerPage() {
                   <Image src="/logo.png" alt="Volunteer" fill className="object-cover" />
                 </div>
                 <div>
-                  <h3 className="font-bold">Adebayo Ogunlesi</h3>
-                  <p className="text-sm text-muted-foreground">Volunteer since 2024</p>
+                  <h3 className="font-bold">Nasir Nasir</h3>
+                  <p className="text-sm text-muted-foreground">Volunteer</p>
                 </div>
               </div>
               <p className="text-muted-foreground italic">
-                "Volunteering with Free Future Foundation has been an incredible experience. I've developed new skills,
-                made meaningful connections, and most importantly, contributed to positive change in my community."
+                ". . . an incredible journey of learning and exploring the values of freedom, liberty, and equality. 
+                Thought this work is slightly outside my usual professional focus, the experience has been deeply enriching."
               </p>
             </AnimatedCard>
 
@@ -615,13 +631,13 @@ export default function VolunteerPage() {
                   <Image src="/logo.png" alt="Volunteer" fill className="object-cover" />
                 </div>
                 <div>
-                  <h3 className="font-bold">Ngozi Emenike</h3>
-                  <p className="text-sm text-muted-foreground">Volunteer since 2024</p>
+                  <h3 className="font-bold">Olapeju Junaid</h3>
+                  <p className="text-sm text-muted-foreground">Volunteer since 2025</p>
                 </div>
               </div>
               <p className="text-muted-foreground italic">
-                "As a volunteer, I've had the opportunity to work on impactful projects that align with my passion for
-                freedom and youth empowerment. The team is supportive, and the work is truly rewarding."
+                "The workshop exceeded expectations, igniting a fire within me to champion positive impact. 
+                I'm glad to have been in the workshop. "
               </p>
             </AnimatedCard>
 
@@ -631,13 +647,12 @@ export default function VolunteerPage() {
                   <Image src="/logo.png" alt="Volunteer" fill className="object-cover" />
                 </div>
                 <div>
-                  <h3 className="font-bold">Chinedu Okoro</h3>
+                  <h3 className="font-bold">Oluwabunkumi Adekunle</h3>
                  </div>
               </div>
               <p className="text-muted-foreground italic">
-                "Volunteering here has given me a platform to contribute to Nigeria's future. I've helped organize
-                events and workshops that have directly impacted young people's understanding of freedom and their
-                rights."
+                "I particularly found the speakers enlightening, as their sessions offered clarity on a lot of issues
+                ranging from activism to policy making and civic governance. "
               </p>
             </AnimatedCard>
           </div>

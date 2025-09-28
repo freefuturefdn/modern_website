@@ -169,9 +169,12 @@ export default function HomePage() {
                 Our Mission
               </h2>
               <p className="text-muted-foreground">
-                At Free Future Foundation, we empower Nigerian youth with the knowledge, skill, and resources to
-                champion freedom. Though education, advocacy, and public campaigns, we aim to cultivate a generation
-                that drives positive change and shapes a brighter future for Nigeria.
+                Our mission is to inspire and equip young Africans to become informed, courageous leaders who
+advance freedom, justice, and human dignity.
+Through transformative education and purposeful campaigns, we champion knowledge, civic
+engagement, and meaningful collaboration with policymakers and partner organizations. Rooted
+in the values of freedom and justice, our work empowers a new generation to drive lasting,
+positive change by shaping policies and communities that reflect these ideals.
               </p>
             </AnimatedCard>
 
@@ -183,8 +186,10 @@ export default function HomePage() {
                 Our Vision
               </h2>
               <p className="text-muted-foreground">
-                To create a prosperous and free Nigeria where every individual is empowered to realize their full
-                potential through economic freedom and individual rights.
+                We envision an Africa where young people, grounded in the principles of freedom, shape society
+with knowledge, courage, and purpose. By building vibrant networks of engaged leaders, we
+cultivate a future where every individual—regardless of background—thrives with dignity,
+champions positive change, and unlocks new horizons of opportunity.
               </p>
             </AnimatedCard>
           </div>
@@ -339,7 +344,7 @@ export default function HomePage() {
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium">{event.location}</p>
                       <Button asChild>
-                        <Link href={event.registration_url}>
+                        <Link href={event.registration_url} target="_blank">
                           Register <ArrowUpRight className="ml-1 h-4 w-4" />
                         </Link>
                       </Button>

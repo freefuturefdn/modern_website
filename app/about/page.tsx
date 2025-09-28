@@ -124,12 +124,13 @@ export default function AboutPage() {
                 <span className="bg-primary/20 text-primary p-2 rounded-full mr-3">
                   <Users className="h-6 w-6" />
                 </span>
-                Our Mission
+                Vision Statement
               </h2>
               <p className="text-muted-foreground">
-                At Free Future Foundation, we empower Nigerian youth with the knowledge, skill, and resources to
-                champion freedom. Though education, advocacy, and public campaigns, we aim to cultivate a generation
-                that drives positive change and shapes a brighter future for Nigeria.
+                We envision an Africa where young people, grounded in the principles of freedom, shape society
+with knowledge, courage, and purpose. By building vibrant networks of engaged leaders, we
+cultivate a future where every individual—regardless of background—thrives with dignity,
+champions positive change, and unlocks new horizons of opportunity.
               </p>
             </AnimatedCard>
 
@@ -138,11 +139,15 @@ export default function AboutPage() {
                 <span className="bg-secondary/20 text-secondary p-2 rounded-full mr-3">
                   <BookOpen className="h-6 w-6" />
                 </span>
-                Our Vision
+                Mission Statement
               </h2>
               <p className="text-muted-foreground">
-                To create a prosperous and free Nigeria where every individual is empowered to realize their full
-                potential through economic freedom and individual rights.
+                Our mission is to inspire and equip young Africans to become informed, courageous leaders who
+advance freedom, justice, and human dignity.
+Through transformative education and purposeful campaigns, we champion knowledge, civic
+engagement, and meaningful collaboration with policymakers and partner organizations. Rooted
+in the values of freedom and justice, our work empowers a new generation to drive lasting,
+positive change by shaping policies and communities that reflect these ideals.
               </p>
             </AnimatedCard>
           </div>

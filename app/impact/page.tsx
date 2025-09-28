@@ -52,10 +52,10 @@ export default function ImpactPage() {
       image: "https://images.unsplash.com/photo-1573879404555-3f82d0582798?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
-      title: "The Vanguard Fellowship",
+      title: "The Liberty Leadership Academy",
       description:
-        "The Vanguard Fellowship is a flagship program of the Free Future Foundation designed to empower young Nigerians through a structured two-phase experience in activism and civic engagement. The 14-week virtual pre-fellowship equips participants with foundational knowledge in civic awareness, economic freedom, and advocacy strategies. Top performers then advance to a 2-day in-person intensive, where they refine their skills, collaborate on projects, and receive certification. More than just a training, the fellowship emphasizes practical application, mentorship, and long-term support, ensuring participants become effective advocates for liberty, human rights, free markets, and limited government. The Vanguard Fellowship stands out for its merit-based structure, strong mentorship, and commitment to building a sustained community of liberty-minded changemakers across Nigeria.",
-      image: "https://images.unsplash.com/photo-1573879404555-3f82d0582798?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "The Liberty Leadership Academy, a 12 week intensive program of the Free Future Foundation, equips 20 high-potential young leaders with the intellectual fondations, practical skill, and professional tools to champion liberty and good governance in Africa.",
+      image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/public/website-images/libertyleadershipacademy.jpg",
     },
   ]
 
@@ -215,8 +215,8 @@ export default function ImpactPage() {
 */}
         </div>
       </section>
-
-      {/* Annual Reports Section */}
+{/*
+      // Annual Reports Section 
       <section className="py-20 bg-primary/70">
         <div className="container mx-auto px-4 text-center">
           <SectionHeading
@@ -237,6 +237,8 @@ export default function ImpactPage() {
           </Button>
         </div>
       </section>
+
+      */}
     </div>
   )
 }
