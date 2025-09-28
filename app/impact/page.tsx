@@ -12,7 +12,7 @@ export default function ImpactPage() {
   const impactStats = [
     {
       number: "2,000+",
-      label: "Youth Empowered",
+      label: "Youth Reached",
       icon: <Users className="h-6 w-6" />,
     },
     {
@@ -21,8 +21,8 @@ export default function ImpactPage() {
       icon: <Target className="h-6 w-6" />,
     },
     {
-      number: "10+",
-      label: "Educational Programs",
+      number: "4+",
+      label: "Programs",
       icon: <BookOpen className="h-6 w-6" />,
     },
     /* {
@@ -145,20 +145,20 @@ export default function ImpactPage() {
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
                   <Image 
-                    src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80" 
-                    alt="Chioma Okonkwo" 
+                    src="./colored-logo.png" 
+                    alt="Nasir Nasir" 
                     fill 
                     className="object-cover" 
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold">Chioma Okonkwo</h3>
-                  <p className="text-sm text-muted-foreground">Youth Leadership Program</p>
+                  <h3 className="font-bold">Nasir Nasir</h3>
+                  <p className="text-sm text-muted-foreground">Veterinarian</p>
                 </div>
               </div>
               <p className="text-muted-foreground italic">
-                "The leadership training I received from Free Future Foundation transformed my life. I now lead a
-                community initiative that has improved educational access for over 200 children in my area."
+                ". . . an incredible journey of learning and exploring the values of freedom, liberty, and equality. 
+                Thought this work is slightly outside my usual professional focus, the experience has been deeply enriching."
               </p>
             </AnimatedCard>
 
@@ -166,20 +166,20 @@ export default function ImpactPage() {
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
                   <Image 
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" 
-                    alt="Emeka Adeyemi" 
+                    src="./colored-logo.png" 
+                    alt="Olapeju Junaid" 
                     fill 
                     className="object-cover" 
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold">Emeka Adeyemi</h3>
-                  <p className="text-sm text-muted-foreground">Economic Freedom Workshop</p>
+                  <h3 className="font-bold">Olapeju Junaid</h3>
+                  <p className="text-sm text-muted-foreground">Legal Researcher and attendee at Activism 101</p>
                 </div>
               </div>
               <p className="text-muted-foreground italic">
-                "Thanks to the knowledge I gained about entrepreneurship and market principles, I was able to start my
-                own business that now employs 15 people in my community."
+                "The workshop exceeded expectations, igniting a fire within me to champion positive impact. 
+                I'm glad to have been in the workshop. "
               </p>
             </AnimatedCard>
 
@@ -187,21 +187,20 @@ export default function ImpactPage() {
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
                   <Image 
-                    src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80" 
-                    alt="Amina Ibrahim" 
+                    src="./colored-logo.png" 
+                    alt="Oluwabukunmi Adekunle" 
                     fill 
                     className="object-cover" 
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold">Amina Ibrahim</h3>
-                  <p className="text-sm text-muted-foreground">Policy Advocacy Program</p>
+                  <h3 className="font-bold">Oluwabukunmi Adekunle</h3>
+                  <p className="text-sm text-muted-foreground">Email Copywriter and Law Student</p>
                 </div>
               </div>
               <p className="text-muted-foreground italic">
-                "Being part of the advocacy network gave me the skills and confidence to engage with local officials.
-                Our group successfully advocated for policy changes that have made it easier for young people to start
-                businesses."
+                "I particularly found the speakers enlightening, as their sessions offered clarity on a lot of issues
+                ranging from activism to policy making and civic governance. "
               </p>
             </AnimatedCard>
           </div>

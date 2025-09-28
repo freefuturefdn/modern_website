@@ -53,7 +53,7 @@ export default function PastEventsPage() {
           .from('events')
           .select('*')
           .eq('status', 'completed')
-          .lt('start_date', new Date().toISOString())
+          // .lt('start_date', new Date().toISOString())
           .order('start_date', { ascending: false })
 
         if (error) throw error

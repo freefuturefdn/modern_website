@@ -38,12 +38,11 @@ export default function HomePage() {
         if (newsError) throw newsError
         setLatestNews(newsData)
 
-        // Fetch upcoming events
         const { data: eventsData, error: eventsError } = await supabase
           .from('events')
           .select('*')
           .eq('status', 'upcoming')
-          .gte('start_date', new Date().toISOString())
+          // .gte('start_date', today.toISOString())
           .order('start_date', { ascending: true })
           .limit(2)
 
@@ -72,8 +71,8 @@ export default function HomePage() {
     <div className="overflow-hidden">
       {/* Donation Popup */}
       {showDonationPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="relative bg-primary text-white rounded-lg shadow-2xl px-8 py-8 max-w-lg w-full flex flex-col items-center gap-6">
+  <div className="fixed bottom-0 right-0 z-50 mb-4 ml-4">
+  <div className="relative bg-primary text-white rounded-lg shadow-2xl px-2 py-2 max-w-sm flex flex-col items-center gap-1">
             <button
               className="absolute top-3 right-3 text-white hover:text-ash"
               aria-label="Close"
@@ -81,12 +80,11 @@ export default function HomePage() {
             >
               <X className="w-6 h-6" />
             </button>
-            <h2 className="text-2xl font-bold mb-1 text-center">Support Our Mission!</h2>
-            <p className="text-base text-center">
-              Help us empower Nigerian youth for a free future. Your donation makes a difference.
+            <h2 className="text-lg font-medium mb-1 text-center">Support Our Mission!</h2>
+            <p className="text-sm text-center">
+              Help us empower Nigerian youth for a freer future. Your donation makes a difference.
             </p>
-            <Button
-              className="mt-2"
+            <Button size="sm" className="mt-1 px-2 py-1"
               variant="secondary"
               onClick={() => router.push("/donate")}
             >
@@ -143,7 +141,7 @@ export default function HomePage() {
                   unoptimized
                 />
               </div>
-
+          {/*
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -152,11 +150,12 @@ export default function HomePage() {
               >
                 <p className="font-bold text-lg">Founded in 2024</p>
                 <p className="text-muted-foreground">by Kelechi Nwannunu</p>
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> 
+      
 
       {/* Mission & Vision Section */}
       <section className="py-20 bg-ash-light">

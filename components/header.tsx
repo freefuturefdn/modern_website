@@ -34,6 +34,7 @@ const navItems: NavItem[] = [
     href: "/get-involved",
     children: [
       { title: "Volunteer", href: "/volunteer" },
+      { title: "Our Volunteers", href: "/volunteers" },
       { title: "Partner With Us", href: "/partner" },
     ],
   },

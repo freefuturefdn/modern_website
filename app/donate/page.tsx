@@ -19,7 +19,7 @@ import AnimatedCard from "@/components/animated-card"
 import { supabase } from "@/lib/supabase"
 
 const QOREPAY_URLS = {
-  naira: "https://paystack.com/pay/m10hfugeh7",
+  naira: "",
   usd: "mailto:info@freefuturefoundation.org?subject=Donation%20Request&body=Hello%2C%20I%20would%20like%20to%20make%20a%20donation%20in%20USD%20or%20crypto."
 }
 
