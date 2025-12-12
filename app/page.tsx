@@ -169,10 +169,12 @@ export default function HomePage() {
                 Our Mission
               </h2>
               <p className="text-muted-foreground">
-                Our mission is to advance individual liberty, free markets, and limited government through
-                education and grassroots advocacy. We equip citizens with the knowledge and tools to
-                champion civil liberties, economic freedom, and responsible self-governance, creating
-                lasting impact in communities across Nigeria.
+                Our mission is to inspire and equip young Africans to become informed, courageous leaders who
+advance freedom, justice, and human dignity.
+Through transformative education and purposeful campaigns, we champion knowledge, civic
+engagement, and meaningful collaboration with policymakers and partner organizations. Rooted
+in the values of freedom and justice, our work empowers a new generation to drive lasting,
+positive change by shaping policies and communities that reflect these ideals.
               </p>
             </AnimatedCard>
 
@@ -184,10 +186,10 @@ export default function HomePage() {
                 Our Vision
               </h2>
               <p className="text-muted-foreground">
-                We envision a Nigeria where individuals fully enjoy personal, economic, and political freedoms.
-                By fostering a culture of entrepreneurship, civic engagement, and constitutional respect,
-                we build communities where free markets create opportunity, and every citizen governs
-                themselves with dignity and responsibility.
+                We envision an Africa where young people, grounded in the principles of freedom, shape society
+with knowledge, courage, and purpose. By building vibrant networks of engaged leaders, we
+cultivate a future where every individual—regardless of background—thrives with dignity,
+champions positive change, and unlocks new horizons of opportunity.
               </p>
             </AnimatedCard>
           </div>
