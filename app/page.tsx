@@ -218,7 +218,7 @@ champions positive change, and unlocks new horizons of opportunity.
                 <h3 className="text-3xl font-bold">Kelechi Nwannunu</h3>
                 <p className="text-xl text-primary font-medium">Chief Executive Officer/Director of Programs.</p>
                 <p className="text-muted-foreground">
-                  Kelechi Lawrence Nwannunu is the founder and CEO of Free Futuer Foundation, a libertarian 
+                  Kelechi Lawrence Nwannunu is the founder and CEO of Free Future Foundation, a libertarian 
                   organization in Nigeria. With five years of active involvement in the libertarian movement, 
                   he has served as National Coordinator for Students For Liberty and graduated from various 
                   libertarian educational programs. 
