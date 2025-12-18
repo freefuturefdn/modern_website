@@ -211,7 +211,7 @@ positive change by shaping policies and communities that reflect these ideals.
         <div className="container mx-auto px-4 text-center">
           <SectionHeading
             title="Join Our Mission"
-            subtitle="Be part of the movement for a free and prosperous Nigeria"
+            subtitle="Be part of the movement for a free and prosperous Africa"
             center
           />
 
