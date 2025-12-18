@@ -16,8 +16,8 @@ export default function ImpactPage() {
       icon: <Users className="h-6 w-6" />,
     },
     {
-      number: "4",
-      label: "States Reached",
+      number: "4+",
+      label: "Countries",
       icon: <Target className="h-6 w-6" />,
     },
     {
@@ -43,19 +43,19 @@ export default function ImpactPage() {
       title: "Her Voice, Her Impact Workshops",
       description:
         "Her Voice, Her Impact Workshops are empowering sessions designed to amplify the voices of young women and equip them with the skills and confidence to become leaders, advocates, and changemakers in their communities. These workshops focus on personal development, leadership training, civic education, and strategic communication, helping participants understand their rights, express their ideas with clarity, and influence public discourse and policy. Through storytelling, mentorship, and interactive learning, the workshops create a safe and supportive space where women can share experiences, build networks, and develop actionable plans for social impact. Her Voice, Her Impact is more than a workshop, it’s a movement to foster agency, resilience, and purpose in the next generation of women leaders committed to shaping a freer, more inclusive society.",
-      image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/her%20voice%20her%20impact%20flyer.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9oZXIgdm9pY2UgaGVyIGltcGFjdCBmbHllci5qcGciLCJpYXQiOjE3NDM4NTMyNzYsImV4cCI6MzM1MjE4OTI3Nn0.-5IJwwwOys3U4VIJt3RrIeMosqN_4Ct3MPd7n8gL7Ws",
+      image: "./hvhi.jpg",
     },
     {
       title: "The Townhall",
       description:
         "The Townhall is a campus-based civic engagement forum that brings together students, faculty, and young leaders to discuss critical social, economic, and political issues affecting their communities and future. Designed as a space for open dialogue and constructive debate, it empowers students to voice their concerns, share ideas, and engage directly with local changemakers and experts. By fostering civic awareness, critical thinking, and collective problem-solving, The Town Hall encourages a culture of active citizenship on campus, where students don’t just learn about society but actively participate in shaping it. Each session is a call to action, sparking meaningful conversations that can lead to real change, right from the heart of the university.",
-      image: "https://images.unsplash.com/photo-1573879404555-3f82d0582798?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      image: "townhall.png",
     },
     {
       title: "The Liberty Leadership Academy",
       description:
         "The Liberty Leadership Academy, a 12 week intensive program of the Free Future Foundation, equips 20 high-potential young leaders with the intellectual fondations, practical skill, and professional tools to champion liberty and good governance in Africa.",
-      image: "https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/public/website-images/libertyleadershipacademy.jpg",
+      image: "lla2.jpeg",
     },
   ]
 
