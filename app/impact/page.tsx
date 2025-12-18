@@ -72,7 +72,7 @@ export default function ImpactPage() {
           >
             <h1 className="text-4xl md:text-5xl font-bold">Our Impact</h1>
             <p className="text-lg text-muted-foreground">
-              Measuring our progress in empowering Nigerian youth and advancing freedom.
+              Measuring our progress in empowering African youths and advancing freedom.
             </p>
           </motion.div>
         </div>
@@ -81,7 +81,7 @@ export default function ImpactPage() {
       {/* Impact Stats Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <SectionHeading title="Impact at a Glance" subtitle="Key metrics from our work across Nigeria" center />
+          <SectionHeading title="Impact at a Glance" subtitle="Key metrics from our work across Africa" center />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             {impactStats.map((stat, index) => (
@@ -104,7 +104,7 @@ export default function ImpactPage() {
       {/* Impact Areas Section */}
       <section className="py-20 bg-ash-light">
         <div className="container mx-auto px-4">
-          <SectionHeading title="Areas of Impact" subtitle="How we're making a difference across Nigeria" />
+          <SectionHeading title="Areas of Impact" subtitle="How we're making a difference across Africa" />
 
           <div className="space-y-16 mt-12">
             {impactAreas.map((area, index) => (
