@@ -109,7 +109,7 @@ export default function HomePage() {
               className="space-y-6"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                Promoting Individual Liberty for a <span className="text-gradient">Free Africa</span>
+                Promoting Individual Liberty for a <span className="text-gradient">Freer Africa</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground">
                 Through free-market education, policy advocacy, and civic engagement, we empower citizens to uphold civil
