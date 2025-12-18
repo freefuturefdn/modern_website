@@ -7,7 +7,7 @@ try {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export", // <- add this line to enable static export (generates out/)
+  // output: "export", // remove or comment out to enable server runtime
   eslint: {
     ignoreDuringBuilds: true,
   },
