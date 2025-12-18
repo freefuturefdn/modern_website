@@ -1,1 +1,0 @@
-self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/home/buchi/projects/freefuture/modern_website/app/layout":["static/media/904be59b21bd51cb-s.p.woff2","static/media/eaead17c7dbfcd5d-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';
