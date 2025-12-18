@@ -227,7 +227,7 @@ champions positive change, and unlocks new horizons of opportunity.
                   Kelechi, a History graduate from the University of Nigeria, Nsukka, is known for his 
                   public speaking, team management, and event hosting skills. As a serial entrepreneur 
                   and committed libertarian, he leads the Free Future Foundation in its mission to promote 
-                  freedom and positive change in Nigeria. 
+                  freedom and positive change in Africa. 
                 </p>
                 <Button asChild>
                   <Link href="/team">
@@ -299,7 +299,7 @@ champions positive change, and unlocks new horizons of opportunity.
       {/* Upcoming Events Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <SectionHeading title="Upcoming Events" subtitle="Join us in our mission to empower Nigerian youth" />
+          <SectionHeading title="Upcoming Events" subtitle="Join us in our mission to empower African youth" />
 
           {loading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">

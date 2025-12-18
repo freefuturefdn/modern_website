@@ -57,7 +57,7 @@ export default function Footer() {
               <h3 className="text-xl font-bold">Free Future Foundation</h3>
             </div>
             <p className="text-sm opacity-80">
-              Empowering Nigerian youth with the knowledge, skills, and resources to champion freedom.
+              Empowering African youths with the knowledge, skills, and resources to champion freedom.
             </p>
             <div className="flex space-x-4">
               <Link href="https://x.com/freefuturefdn" className="hover:text-primary transition-colors">
