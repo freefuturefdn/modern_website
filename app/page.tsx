@@ -205,7 +205,7 @@ champions positive change, and unlocks new horizons of opportunity.
             <AnimatedCard direction="right">
               <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-xl">
                 <Image
-                  src="https://xjvcrbtgesdtudmvtlau.supabase.co/storage/v1/object/sign/website-images/founder.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJzaXRlLWltYWdlcy9mb3VuZGVyLmpwZyIsImlhdCI6MTc0Mzg0NTU3MSwiZXhwIjozMzUyMTgxNTcxfQ.J-SEdbMDup1tGi0JdsQZVOSdC9IglWSYCxiZ8sm1y34"
+                  src="./kelechinwannunu.png"
                   alt="Kelechi Nwannunu - Founder of Free Future Foundation"
                   fill
                   className="object-cover"
